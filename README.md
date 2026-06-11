@@ -1,4 +1,4 @@
-# ptcg-dragapult-bots
+# PTCG_AI_Battle_Client
 
 ポケモンカードゲーム (Pokémon TCG) の **対戦 AI bot** を誰でも作れるようにするための、
 リファレンス実装 + 接続クライアントです。
@@ -40,8 +40,8 @@ Rust 1.80+ が必要です ([rustup](https://rustup.rs/))。
 
 ```sh
 # submodule (カードデータ) ごと clone する
-git clone --recurse-submodules https://github.com/shun-1ulce/ptcg-dragapult-bots.git
-cd ptcg-dragapult-bots
+git clone --recurse-submodules https://github.com/1ulce/PTCG_AI_Battle_Client.git
+cd PTCG_AI_Battle_Client
 
 # すでに clone 済みなら submodule を取得
 git submodule update --init --recursive
