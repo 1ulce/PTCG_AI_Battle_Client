@@ -1,0 +1,3 @@
+[submodule "data/pokemon-card-data"]
+	path = data/pokemon-card-data
+	url = https://github.com/1ulce/pokemon-card-data.git

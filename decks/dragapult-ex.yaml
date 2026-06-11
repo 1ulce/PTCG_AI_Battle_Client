@@ -1,0 +1,32 @@
+# Dragapult ex (ドラパルトex) — ユーザー指定リスト (2026-06-09)。
+# `ptcg-cli play --deck decks/dragapult-ex.yaml` でミラー対戦。
+# slug は crates/engine-core/data/cards/{slug}.yaml (= master の stem) と一致。
+# 検証: 60 枚 / 同名 4 枚以内 / ACE SPEC は unfair-stamp 1 枚のみ。
+name: Dragapult ex
+cards:
+  # --- ポケモン (22) ---
+  - { slug: dreepy, count: 4 }
+  - { slug: drakloak, count: 4 }
+  - { slug: dragapult-ex, count: 3 }
+  - { slug: duskull, count: 2 }
+  - { slug: dusclops, count: 2 }
+  - { slug: dusknoir, count: 2 }
+  - { slug: meowth-ex, count: 2 }
+  - { slug: fezandipiti-ex, count: 1 }
+  - { slug: budew, count: 2 }
+  # --- グッズ / サポート / スタジアム (30) ---
+  - { slug: ultra-ball, count: 4 }
+  - { slug: rare-candy, count: 3 }
+  - { slug: buddy-buddy-poffin, count: 4 }
+  - { slug: lillie-s-determination, count: 4 }
+  - { slug: crispin, count: 2 }
+  - { slug: jamming-tower, count: 1 }
+  - { slug: unfair-stamp, count: 1 }
+  - { slug: night-stretcher, count: 2 }
+  - { slug: poke-pad, count: 4 }
+  - { slug: special-red-card, count: 1 }
+  - { slug: team-rocket-s-watchtower, count: 1 }
+  - { slug: boss-s-orders, count: 3 }
+  # --- エネルギー (8) ---
+  - { slug: fire-energy, count: 4 }
+  - { slug: psychic-energy, count: 4 }
