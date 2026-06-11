@@ -1,8 +1,9 @@
 //! WebSocket クライアント transport (tungstenite 直叩き、engine 非依存)。
 //!
 //! 本体 `engine-runtime::websocket` のクライアント経路 (`connect_ws_tcp` +
-//! `send_client` / `recv_server`) を最小化したもの。`ws://HOST:PORT/ai-battle/v1/connect`
-//! に平文で繋ぎ、WS テキストフレーム 1 = JSON 1 で送受信する。
+//! `send_client` / `recv_server`) を最小化したもの。`ws://` (平文) と `wss://` (TLS、rustls +
+//! OS ルート証明書) の両方で `HOST:PORT/ai-battle/v1/connect` に繋ぎ、WS テキストフレーム
+//! 1 = JSON 1 で送受信する。
 //!
 //! フレームレベル ping/pong は tungstenite が自動応答するので recv で読み飛ばす
 //! (アプリ層の `ServerMessage::Ping` / `ClientMessage::Pong` とは別物)。Close は
@@ -11,10 +12,11 @@
 use std::net::TcpStream;
 
 use tungstenite::{
-    client,
+    client, client_tls,
     error::Error as WsError,
     handshake::{client::Request, HandshakeError, HandshakeRole},
     protocol::Message,
+    stream::MaybeTlsStream,
     WebSocket,
 };
 
@@ -55,23 +57,39 @@ impl From<serde_json::Error> for TransportError {
     }
 }
 
-/// 同期 WebSocket クライアント。
+/// 同期 WebSocket クライアント (平文 / TLS 両対応)。
 pub struct WsClient {
-    socket: WebSocket<TcpStream>,
+    socket: WebSocket<MaybeTlsStream<TcpStream>>,
 }
 
 impl WsClient {
-    /// `ws://host:port/ai-battle/v1/connect` に TCP 接続して WebSocket ハンドシェイクする。
+    /// `host:port/ai-battle/v1/connect` に接続して WebSocket ハンドシェイクする。
+    /// `secure=true` なら `wss://` (TLS、rustls + OS ルート証明書で証明書を検証)。
     ///
     /// # Errors
-    /// TCP 接続失敗 / ハンドシェイク失敗。
-    pub fn connect(host: &str, port: u16) -> Result<Self, TransportError> {
+    /// TCP 接続失敗 / TLS ハンドシェイク失敗 (証明書不正等) / WebSocket ハンドシェイク失敗。
+    pub fn connect(host: &str, port: u16, secure: bool) -> Result<Self, TransportError> {
         let stream = TcpStream::connect((host, port))?;
-        let host_header = stream
-            .peer_addr()
-            .map_or_else(|_| host.to_string(), |a| a.to_string());
-        let request = build_ws_request("ws", &host_header, CONNECT_PATH)?;
-        let (socket, _response) = client(request, stream).map_err(handshake_err_to_transport)?;
+        let scheme = if secure { "wss" } else { "ws" };
+        // 既定ポート (wss=443 / ws=80) のときは Host/URI に :port を付けない
+        // (TLS の証明書検証はホスト名で行われるため、bare host にする)。
+        let default_port = if secure { 443 } else { 80 };
+        let authority = if port == default_port {
+            host.to_string()
+        } else {
+            format!("{host}:{port}")
+        };
+        let request = build_ws_request(scheme, &authority, CONNECT_PATH)?;
+        let socket = if secure {
+            install_crypto_provider();
+            let (socket, _response) =
+                client_tls(request, stream).map_err(handshake_err_to_transport)?;
+            socket
+        } else {
+            let (socket, _response) = client(request, MaybeTlsStream::Plain(stream))
+                .map_err(handshake_err_to_transport)?;
+            socket
+        };
         Ok(Self { socket })
     }
 
@@ -121,6 +139,17 @@ fn build_ws_request(scheme: &str, host: &str, path: &str) -> Result<Request, Tra
         )
         .body(())
         .map_err(|e| TransportError::Unexpected(format!("request build: {e}")))
+}
+
+/// rustls 0.23 の process-default CryptoProvider を 1 度だけ ring で設定する。
+/// `client_tls` (tungstenite + rustls) はこの default を使う。
+fn install_crypto_provider() {
+    use std::sync::Once;
+    static ONCE: Once = Once::new();
+    ONCE.call_once(|| {
+        // 既に設定済みなら Err が返るが無視してよい (他クレートが設定した default を使う)。
+        let _ = rustls::crypto::ring::default_provider().install_default();
+    });
 }
 
 fn ws_err_to_transport(e: WsError) -> TransportError {

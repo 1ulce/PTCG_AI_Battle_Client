@@ -24,7 +24,15 @@ serde_json = "1"
 serde_yaml = "0.9"
 rand = "0.8"
 rand_chacha = "0.3"
-tungstenite = { version = "0.29", default-features = false, features = ["handshake"] }
+# rustls-tls-native-roots = pure-Rust TLS + OS のルート証明書。wss:// 接続用
+# (OpenSSL 等のシステム依存なしでどこでもビルドできる)。
+tungstenite = { version = "0.29", default-features = false, features = [
+    "handshake",
+    "rustls-tls-native-roots",
+] }
+# rustls 0.23 は CryptoProvider を明示選択する必要がある。ring は cmake/OpenSSL 不要で
+# どこでもビルドできる pure-Rust 寄りプロバイダ。transport.rs で install_default する。
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
 
 [lints.clippy]
 all = { level = "warn", priority = -1 }

@@ -1,13 +1,13 @@
 //! `connect` — Dragapult ex bot を WebSocket クライアントにしてリモート `serve` へ接続する。
 //!
-//! `ws://HOST:PORT/ai-battle/v1/connect` に繋ぎ、先頭 subscribe を送ってから Request/Prompt
-//! を [`BotPolicy`](ptcg_dragapult_bots::bots::BotPolicy) で応答する。`--games N` で N 局
-//! 繰り返す (1 局 1 接続)。
+//! `wss://HOST/ai-battle/v1/connect` (TLS) または `ws://HOST:PORT` (平文) に繋ぎ、先頭 subscribe
+//! を送ってから Request/Prompt を [`BotPolicy`](ptcg_dragapult_bots::bots::BotPolicy) で応答する。
+//! `--games N` で N 局繰り返す (1 局 1 接続)。
 //!
 //! ## 使い方
 //!
 //! ```text
-//! connect --server ws://HOST:8765 [--room ID | --vs NAME] \
+//! connect --server wss://arena.ptcgtools.com [--room ID | --vs NAME] \
 //!         --bot dragapult-takeuchi --deck decks/dragapult-ex.yaml [--games N] [--seed S] \
 //!         [--cards-dir data/pokemon-card-data/cards]
 //! ```
@@ -88,14 +88,14 @@ fn run() -> Result<(), String> {
         }
     }
 
-    let server = server.ok_or("connect requires --server ws://HOST:PORT")?;
+    let server = server.ok_or("connect requires --server wss://HOST (or ws://HOST:PORT)")?;
     if !bots::available().contains(&bot.as_str()) {
         return Err(format!(
             "--bot must be one of {:?} (got {bot:?})",
             bots::available()
         ));
     }
-    let (host, port) = parse_ws_server(&server)?;
+    let (host, port, secure) = parse_ws_server(&server)?;
 
     // カード事実 (ex 判定 / ワザ index) を pokemon-card-data から読む。
     let cards = CardFacts::load_from_dir(&cards_dir)
@@ -116,8 +116,9 @@ fn run() -> Result<(), String> {
     } else {
         "open".to_string()
     };
+    let scheme = if secure { "wss" } else { "ws" };
     eprintln!(
-        "[connect] ws://{host}:{port}/ai-battle/v1/connect  bot={bot}  intent={intent}  games={games}"
+        "[connect] {scheme}://{host}:{port}/ai-battle/v1/connect  bot={bot}  intent={intent}  games={games}"
     );
 
     for game in 0..games {
@@ -125,6 +126,7 @@ fn run() -> Result<(), String> {
         let summary = run_one_game(
             &host,
             port,
+            secure,
             &bot,
             &cards,
             game_seed,
@@ -156,13 +158,14 @@ struct Subscribe<'a> {
 fn run_one_game(
     host: &str,
     port: u16,
+    secure: bool,
     bot_name: &str,
     cards: &CardFacts,
     seed: u64,
     sub: &Subscribe<'_>,
 ) -> Result<String, String> {
     let mut tx =
-        WsClient::connect(host, port).map_err(|e| format!("connect ws://{host}:{port}: {e}"))?;
+        WsClient::connect(host, port, secure).map_err(|e| format!("connect {host}:{port}: {e}"))?;
     let mut policy = bots::build(bot_name, cards).ok_or("unknown bot")?;
     let mut seed_bytes = [0u8; 32];
     seed_bytes[..8].copy_from_slice(&seed.to_le_bytes());
@@ -229,33 +232,40 @@ fn run_one_game(
     Ok(summary)
 }
 
-/// `ws://host:port` (scheme/path は任意) を `(host, port)` に分解する。port は必須。
-fn parse_ws_server(s: &str) -> Result<(String, u16), String> {
-    let rest = s
-        .strip_prefix("ws://")
-        .or_else(|| s.strip_prefix("wss://"))
-        .unwrap_or(s);
+/// `ws://host:port` / `wss://host` を `(host, port, secure)` に分解する。
+/// scheme が `wss://` なら `secure=true`。ポート省略時は既定 (wss=443 / ws=80) を補う。
+fn parse_ws_server(s: &str) -> Result<(String, u16, bool), String> {
+    let (rest, secure) = if let Some(r) = s.strip_prefix("wss://") {
+        (r, true)
+    } else if let Some(r) = s.strip_prefix("ws://") {
+        (r, false)
+    } else {
+        (s, false)
+    };
     let authority = rest.split('/').next().unwrap_or(rest);
-    let (host, port_str) = authority
-        .rsplit_once(':')
-        .ok_or_else(|| format!("--server must include a port, e.g. ws://HOST:PORT (got {s:?})"))?;
+    let (host, port) = match authority.rsplit_once(':') {
+        Some((h, port_str)) => {
+            let p: u16 = port_str
+                .parse()
+                .map_err(|e: std::num::ParseIntError| format!("bad port in --server {s:?}: {e}"))?;
+            (h, p)
+        }
+        None => (authority, if secure { 443 } else { 80 }),
+    };
     if host.is_empty() {
         return Err(format!("--server has empty host (got {s:?})"));
     }
-    let port: u16 = port_str
-        .parse()
-        .map_err(|e: std::num::ParseIntError| format!("bad port in --server {s:?}: {e}"))?;
-    Ok((host.to_string(), port))
+    Ok((host.to_string(), port, secure))
 }
 
 const HELP: &str = "\
 connect — Dragapult ex bot を WebSocket クライアントにしてリモート serve へ接続する
 
 USAGE:
-    connect --server ws://HOST:PORT [OPTIONS]
+    connect --server wss://HOST [OPTIONS]
 
 OPTIONS:
-    --server ws://HOST:PORT   接続先 (必須)
+    --server URL              接続先 (必須)。wss://HOST (TLS, 既定 443) / ws://HOST:PORT (平文)
     --bot NAME                random | dragapult-takeuchi | dragapult-yopifutto (既定 random)
     --deck PATH               持参デッキ YAML (BYO)
     --games N                 繰り返し試合数 (既定 1)
@@ -273,16 +283,33 @@ mod tests {
     fn parses_ws_url() {
         assert_eq!(
             parse_ws_server("ws://127.0.0.1:8765/x").unwrap(),
-            ("127.0.0.1".to_string(), 8765)
+            ("127.0.0.1".to_string(), 8765, false)
         );
         assert_eq!(
             parse_ws_server("example.com:80").unwrap(),
-            ("example.com".to_string(), 80)
+            ("example.com".to_string(), 80, false)
         );
     }
 
     #[test]
-    fn rejects_missing_port() {
-        assert!(parse_ws_server("ws://host").is_err());
+    fn parses_wss_default_port() {
+        // wss:// はポート省略で 443、secure=true。
+        assert_eq!(
+            parse_ws_server("wss://arena.ptcgtools.com").unwrap(),
+            ("arena.ptcgtools.com".to_string(), 443, true)
+        );
+        // wss:// で明示ポートも可。
+        assert_eq!(
+            parse_ws_server("wss://arena.ptcgtools.com:8443/x").unwrap(),
+            ("arena.ptcgtools.com".to_string(), 8443, true)
+        );
+    }
+
+    #[test]
+    fn ws_without_port_defaults_80() {
+        assert_eq!(
+            parse_ws_server("ws://host").unwrap(),
+            ("host".to_string(), 80, false)
+        );
     }
 }

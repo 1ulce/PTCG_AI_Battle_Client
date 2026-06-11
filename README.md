@@ -2,7 +2,7 @@
 
 ポケモンカードゲーム (Pokémon TCG) の **対戦 AI bot** を誰でも作れるようにするための、
 リファレンス実装 + 接続クライアントです。
-[PTCG AI Battle Platform](https://github.com/shun-1ulce/PTCG_AI_Battle_Platform) の
+[PTCG AI Battle Platform](https://arena.ptcgtools.com) の
 対戦サーバに WebSocket で接続し、bot 同士を自動対戦させられます。
 
 将棋の floodgate、チェスの Lichess Bots に相当する「ポケカ版 bot アリーナ」を目指しています。
@@ -54,7 +54,7 @@ cargo build --release
 ## 対戦サーバの使い方
 
 `connect` バイナリが、リモートの対戦サーバに WebSocket クライアントとして接続します。
-公開アリーナは **`arena.ptcgtools.com`** で運用しています (ポート `8765`、平文 `ws://`)。
+公開アリーナは **`wss://arena.ptcgtools.com`** で運用しています (TLS、ポート 443)。
 
 > ℹ️ アリーナはメンテナが運用しています。応答が無いときは停止中の可能性があります。
 
@@ -62,7 +62,7 @@ cargo build --release
 
 ```sh
 cargo run --release --bin connect -- \
-  --server ws://arena.ptcgtools.com:8765 \
+  --server wss://arena.ptcgtools.com \
   --vs dragapult-yopifutto \
   --bot dragapult-takeuchi \
   --deck decks/dragapult-ex.yaml \
@@ -76,11 +76,11 @@ cargo run --release --bin connect -- \
 
 ```sh
 # 端末 1
-cargo run --release --bin connect -- --server ws://arena.ptcgtools.com:8765 \
+cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   --room myroom --bot dragapult-takeuchi --deck decks/dragapult-ex.yaml --games 5
 
 # 端末 2
-cargo run --release --bin connect -- --server ws://arena.ptcgtools.com:8765 \
+cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   --room myroom --bot dragapult-yopifutto --deck decks/dragapult-ex.yaml --games 5
 ```
 
@@ -101,7 +101,7 @@ cargo run --release --bin connect -- --server ws://arena.ptcgtools.com:8765 \
 
 | フラグ | 既定 | 説明 |
 |---|---|---|
-| `--server ws://HOST:PORT` | (必須) | 接続先サーバ |
+| `--server URL` | (必須) | 接続先。`wss://HOST` (TLS, 既定 443) / `ws://HOST:PORT` (平文) |
 | `--bot NAME` | `random` | `random` / `dragapult-takeuchi` / `dragapult-yopifutto` |
 | `--deck PATH` | なし | 持参デッキ YAML |
 | `--games N` | `1` | 繰り返し対戦数 (1 局 1 接続) |
@@ -198,7 +198,7 @@ impl BotPolicy for MyBot {
 
 要点だけ:
 
-- **WebSocket** で `ws://HOST:PORT/ai-battle/v1/connect` に接続。1 フレーム = 1 JSON。
+- **WebSocket** で `wss://HOST/ai-battle/v1/connect` (TLS) または `ws://HOST:PORT` に接続。1 フレーム = 1 JSON。
 - サーバ → AI: **`ServerMessage`** (`subscribed` / `event` / `request` / `prompt` / `ping` / `error`)
 - AI → サーバ: **`ClientMessage`** (`subscribe` / `response` / `choice` / `pong`)
 - 2 系統: 全体に流れる **event ストリーム** と、判断を求める **request/prompt → response/choice**。
@@ -236,7 +236,7 @@ cargo fmt --check
 ## ルールエンジンとの関係
 
 このリポジトリは **bot とクライアントだけ**を含み、ルールエンジン (審判) は
-[PTCG AI Battle Platform](https://github.com/shun-1ulce/PTCG_AI_Battle_Platform) 側にあります。
+PTCG AI Battle Platform 側にあります。
 だからこそ engine に依存せず、誰でも軽量に bot を書けます。収録 bot のロジックと wire DTO は
 本体を「真値」として片方向に同期しています (詳細は [CLAUDE.md](CLAUDE.md))。
 
