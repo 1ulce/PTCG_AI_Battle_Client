@@ -34,8 +34,13 @@ src/
 └─ bin/connect.rs  # subscribe → Request/Prompt 応答ループ
 tests/wire_contract.rs   # サーバが送る JSON をデシリアライズできる契約テスト
 data/pokemon-card-data/  # カードマスタ (submodule)
+docs/protocol.md         # 通信プロトコルの JSON レベル リファレンス (実装と一致)
 docs/bots/               # bot 戦略の機械可読仕様 (ロジックの真値)
 ```
+
+プロトコル (サーバと交わす JSON の形・キー・エラー・プロンプト応答) の詳細は
+[`docs/protocol.md`](docs/protocol.md)。serde 形の一次ソースは `src/wire/` で、これと
+`docs/protocol.md` を食い違わせないこと (wire DTO を変えたら doc も更新)。
 
 ## 上流 (ルールエンジン) との関係 — 重要
 

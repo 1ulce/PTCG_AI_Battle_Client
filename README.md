@@ -191,8 +191,12 @@ impl BotPolicy for MyBot {
 
 ## プロトコルの概要
 
-詳細な wire 形は [`src/wire/`](src/wire/) を読むのが確実です (本体サーバと JSON 互換、
-`tests/wire_contract.rs` で固定)。
+サーバと交わす JSON の**完全なリファレンス**は **[`docs/protocol.md`](docs/protocol.md)** にあります
+(各メッセージのキー・型・エラーコード・プロンプトへの応答の仕方・情報マスキングまで実装と一致する形で記載)。
+他言語で bot を書くときもここを見れば実装できます。型定義の一次ソースは [`src/wire/`](src/wire/)、
+互換性は `tests/wire_contract.rs` で固定しています。
+
+要点だけ:
 
 - **WebSocket** で `ws://HOST:PORT/ai-battle/v1/connect` に接続。1 フレーム = 1 JSON。
 - サーバ → AI: **`ServerMessage`** (`subscribed` / `event` / `request` / `prompt` / `ping` / `error`)
