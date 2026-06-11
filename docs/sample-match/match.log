@@ -1,0 +1,1353 @@
+=== MATCH m-0005 — you are P1 vs ai-2 ===
+[event] seq=0 actor=System GameStart { p1_deck_size: 60, p2_deck_size: 60 }
+[event] seq=1 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=2 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=3 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=4 actor=System Internal { name: "choice_received" }
+[event] seq=5 actor=System DecideFirstPlayer { result: P2 }
+[event] seq=6 actor=Me DealInitialHand { player: P1, entities: [51, 26, 11, 12, 42, 6, 59] }
+[event] seq=7 actor=Opp DealInitialHand { player: P2, entities: [119, 66, 95, 116, 99, 78, 80] }
+[event] seq=8 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=9 actor=System Internal { name: "choice_received" }
+[event] seq=10 actor=Opp PlaceActive { player: P2, entity: 80 }
+[event] seq=11 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=12 actor=System Internal { name: "choice_received" }
+[event] seq=13 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0004 (parent r-0000, choose 1..1) --
+  kind: {"kind":"choose_initial_active","eligible":[12]}
+  >> choice: selected=[12] counts=[] yes=None branch=None
+[event] seq=14 actor=System Internal { name: "choice_received" }
+[event] seq=15 actor=Me PlaceActive { player: P1, entity: 12 }
+[event] seq=16 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0005 (parent r-0000, choose 0..0) --
+  kind: {"kind":"place_initial_bench","eligible":[],"bench_max":0}
+  >> choice: selected=[] counts=[] yes=None branch=None
+[event] seq=17 actor=System Internal { name: "choice_received" }
+[event] seq=18 actor=Me PlacePrizes { player: P1, entities: [40, 10, 1, 27, 32, 28] }
+[event] seq=19 actor=Opp PlacePrizes { player: P2, entities: [115, 98, 104, 86, 87, 61] }
+[event] seq=20 actor=System SetupComplete
+[event] seq=21 actor=Opp TurnStart { turn: 1, active_player: P2 }
+[event] seq=22 actor=Opp DrawCard { player: P2, entity: 70, deck_size_after: 46 }
+[event] seq=23 actor=Me TurnStart { turn: 2, active_player: P1 }
+
+== request r-0007 (turn 2, phase main, active me) ==
+  me  active: duskull#12 HP60/60
+  me  bench : (empty)
+  me  hand=7 deck=46 prizes=6 discard=0 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":26}
+    [2] {"id":"play_card","entity_id":42}
+    [3] {"id":"play_card","entity_id":59,"target":{"kind":"own_active"}}
+    [4] {"id":"play_card","entity_id":2}
+  >> chose: {"id":"play_card","entity_id":2}
+[event] seq=24 actor=Me DrawCard { player: P1, entity: 2, deck_size_after: 46 }
+[event] seq=25 actor=Me PlaceBench { player: P1, entity: 2, index: 0 }
+
+== request r-0008 (turn 2, phase main, active me) ==
+  me  active: duskull#12 HP60/60
+  me  bench : dreepy#2 HP70/70
+  me  hand=6 deck=46 prizes=6 discard=0 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":26}
+    [2] {"id":"play_card","entity_id":42}
+    [3] {"id":"play_card","entity_id":59,"target":{"kind":"own_active"}}
+    [4] {"id":"play_card","entity_id":59,"target":{"kind":"own_bench","index":0}}
+  >> chose: {"id":"play_card","entity_id":26}
+[event] seq=26 actor=Me PlayItem { player: P1, entity: 26, card: 1815 }
+[event] seq=27 actor=Me Internal { name: "effect_started" }
+[event] seq=28 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0009 (parent r-0008, choose 2..2) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":51,"card":"boss-s-orders"},{"entity_id":11,"card":"dragapult-ex"},{"entity_id":42,"card":"night-stretcher"},{"entity_id":6,"card":"drakloak"},{"entity_id":59,"card":"psychic-energy"}]}
+  >> choice: selected=[42, 51] counts=[] yes=None branch=None
+[event] seq=29 actor=System Internal { name: "choice_received" }
+[event] seq=30 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=31 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=32 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0010 (parent r-0008, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":5,"card":"drakloak"},{"entity_id":16,"card":"dusknoir"},{"entity_id":4,"card":"dreepy"},{"entity_id":7,"card":"drakloak"},{"entity_id":21,"card":"budew"},{"entity_id":13,"card":"duskull"},{"entity_id":22,"card":"budew"},{"entity_id":14,"card":"dusclops"},{"entity_id":17,"card":"dusknoir"},{"entity_id":8,"card":"drakloak"},{"entity_id":18,"card":"meowth-ex"},{"entity_id":9,"card":"dragapult-ex"},{"entity_id":3,"card":"dreepy"},{"entity_id":19,"card":"meowth-ex"},{"entity_id":20,"card":"fezandipiti-ex"},{"entity_id":15,"card":"dusclops"}]}
+  >> choice: selected=[21] counts=[] yes=None branch=None
+[event] seq=33 actor=System Internal { name: "choice_received" }
+[event] seq=34 actor=System Internal { name: "moved" }
+[event] seq=35 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=36 actor=System Internal { name: "effect_completed" }
+
+== request r-0011 (turn 2, phase main, active me) ==
+  me  active: duskull#12 HP60/60
+  me  bench : dreepy#2 HP70/70
+  me  hand=4 deck=45 prizes=6 discard=3 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":59,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":59,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":21}
+  >> chose: {"id":"play_card","entity_id":21}
+[event] seq=37 actor=Me PlaceBench { player: P1, entity: 21, index: 1 }
+
+== request r-0012 (turn 2, phase main, active me) ==
+  me  active: duskull#12 HP60/60
+  me  bench : dreepy#2 HP70/70 | budew#21 HP30/30
+  me  hand=3 deck=45 prizes=6 discard=3 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":59,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":59,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":59,"target":{"kind":"own_bench","index":1}}
+  >> chose: {"id":"play_card","entity_id":59,"target":{"kind":"own_active"}}
+[event] seq=38 actor=Me AttachEnergy { player: P1, energy: 59, to: 12 }
+
+== request r-0013 (turn 2, phase main, active me) ==
+  me  active: duskull#12 HP60/60 E×1
+  me  bench : dreepy#2 HP70/70 | budew#21 HP30/30
+  me  hand=2 deck=45 prizes=6 discard=3 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_attack","attack_index":0}
+    [2] {"id":"retreat","to_bench_index":0,"energy_to_discard":[59]}
+    [3] {"id":"retreat","to_bench_index":1,"energy_to_discard":[59]}
+  >> chose: {"id":"retreat","to_bench_index":1,"energy_to_discard":[59]}
+[event] seq=39 actor=Me RetreatPokemon { player: P1, from: 12, to_bench_index: 1 }
+
+== request r-0014 (turn 2, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dreepy#2 HP70/70 | duskull#12 HP60/60
+  me  hand=2 deck=45 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP210/210
+  opp bench : (empty)
+  opp hand=7 deck=46 prizes=6 discard=0 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_attack","attack_index":0}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=40 actor=Me DeclareAttack { player: P1, entity: 21, attack_index: 0 }
+[event] seq=41 actor=System ApplyDamage { target: 80, amount: 10 }
+[event] seq=42 actor=System Internal { name: "effect_completed" }
+[event] seq=43 actor=Opp TurnStart { turn: 3, active_player: P2 }
+[event] seq=44 actor=Opp DrawCard { player: P2, entity: 114, deck_size_after: 45 }
+[event] seq=45 actor=Opp PlaySupporter { player: P2, entity: 99, card: 298 }
+[event] seq=46 actor=Opp Internal { name: "effect_started" }
+[event] seq=47 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=48 actor=System Internal { name: "choice_received" }
+[event] seq=49 actor=System Internal { name: "moved" }
+[event] seq=50 actor=System Internal { name: "moved" }
+[event] seq=51 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=52 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=53 actor=System Internal { name: "choice_received" }
+[event] seq=54 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=55 actor=System Internal { name: "choice_received" }
+[event] seq=56 actor=System Internal { name: "effect_completed" }
+[event] seq=57 actor=Me TurnStart { turn: 4, active_player: P1 }
+
+== request r-0020 (turn 4, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dreepy#2 HP70/70 | duskull#12 HP60/60
+  me  hand=3 deck=44 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP200/210 E×1
+  opp bench : (empty)
+  opp hand=8 deck=43 prizes=6 discard=1 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":6,"target":{"kind":"own_bench","index":0}}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"play_card","entity_id":6,"target":{"kind":"own_bench","index":0}}
+[event] seq=58 actor=Me DrawCard { player: P1, entity: 41, deck_size_after: 44 }
+[event] seq=59 actor=Me Evolve { player: P1, from: 2, to: 6 }
+
+== request r-0021 (turn 4, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : drakloak#6 HP90/90 | duskull#12 HP60/60
+  me  hand=2 deck=44 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP200/210 E×1
+  opp bench : (empty)
+  opp hand=8 deck=43 prizes=6 discard=1 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":6,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"use_ability","entity_id":6,"ability_index":0}
+[event] seq=60 actor=Me UseAbility { player: P1, entity: 6, ability_index: 0 }
+[event] seq=61 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0022 (parent r-0021, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":9,"card":"dragapult-ex"},{"entity_id":52,"card":"boss-s-orders"}]}
+  >> choice: selected=[9] counts=[] yes=None branch=None
+[event] seq=62 actor=System Internal { name: "choice_received" }
+[event] seq=63 actor=System Internal { name: "moved" }
+[event] seq=64 actor=System Internal { name: "effect_completed" }
+
+== request r-0023 (turn 4, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : drakloak#6 HP90/90 | duskull#12 HP60/60
+  me  hand=3 deck=43 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP200/210 E×1
+  opp bench : (empty)
+  opp hand=8 deck=43 prizes=6 discard=1 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_attack","attack_index":0}
+    [2] {"id":"retreat","to_bench_index":0}
+    [3] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=65 actor=Me DeclareAttack { player: P1, entity: 21, attack_index: 0 }
+[event] seq=66 actor=System ApplyDamage { target: 80, amount: 10 }
+[event] seq=67 actor=System Internal { name: "effect_completed" }
+[event] seq=68 actor=Opp TurnStart { turn: 5, active_player: P2 }
+[event] seq=69 actor=Opp DrawCard { player: P2, entity: 94, deck_size_after: 42 }
+[event] seq=70 actor=Opp PlaySupporter { player: P2, entity: 95, card: 945 }
+[event] seq=71 actor=Opp Internal { name: "effect_started" }
+[event] seq=72 actor=System Internal { name: "moved" }
+[event] seq=73 actor=System Internal { name: "moved" }
+[event] seq=74 actor=System Internal { name: "moved" }
+[event] seq=75 actor=System Internal { name: "moved" }
+[event] seq=76 actor=System Internal { name: "moved" }
+[event] seq=77 actor=System Internal { name: "moved" }
+[event] seq=78 actor=System Internal { name: "moved" }
+[event] seq=79 actor=System Internal { name: "moved" }
+[event] seq=80 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=81 actor=Opp Internal { name: "drew" }
+[event] seq=82 actor=Opp Internal { name: "drew" }
+[event] seq=83 actor=Opp Internal { name: "drew" }
+[event] seq=84 actor=Opp Internal { name: "drew" }
+[event] seq=85 actor=Opp Internal { name: "drew" }
+[event] seq=86 actor=Opp Internal { name: "drew" }
+[event] seq=87 actor=Opp Internal { name: "drew" }
+[event] seq=88 actor=Opp Internal { name: "drew" }
+[event] seq=89 actor=System Internal { name: "effect_completed" }
+[event] seq=90 actor=Opp PlaceBench { player: P2, entity: 63, index: 0 }
+[event] seq=91 actor=Opp PlaceBench { player: P2, entity: 72, index: 1 }
+[event] seq=92 actor=Opp PlaceBench { player: P2, entity: 73, index: 2 }
+[event] seq=93 actor=Me TurnStart { turn: 6, active_player: P1 }
+
+== request r-0029 (turn 6, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : drakloak#6 HP90/90 | duskull#12 HP60/60
+  me  hand=4 deck=42 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP190/210 E×1
+  opp bench : dreepy#63 HP70/70 | duskull#72 HP60/60 | duskull#73 HP60/60
+  opp hand=5 deck=42 prizes=6 discard=2 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":11,"target":{"kind":"own_bench","index":0}}
+    [2] {"id":"play_card","entity_id":9,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":4}
+    [4] {"id":"use_ability","entity_id":6,"ability_index":0}
+    [5] {"id":"use_attack","attack_index":0}
+    [6] {"id":"retreat","to_bench_index":0}
+    [7] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"use_ability","entity_id":6,"ability_index":0}
+[event] seq=94 actor=Me DrawCard { player: P1, entity: 4, deck_size_after: 42 }
+[event] seq=95 actor=Me UseAbility { player: P1, entity: 6, ability_index: 0 }
+[event] seq=96 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0030 (parent r-0029, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":15,"card":"dusclops"},{"entity_id":50,"card":"boss-s-orders"}]}
+  >> choice: selected=[15] counts=[] yes=None branch=None
+[event] seq=97 actor=System Internal { name: "choice_received" }
+[event] seq=98 actor=System Internal { name: "moved" }
+[event] seq=99 actor=System Internal { name: "effect_completed" }
+
+== request r-0031 (turn 6, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : drakloak#6 HP90/90 | duskull#12 HP60/60
+  me  hand=5 deck=41 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP190/210 E×1
+  opp bench : dreepy#63 HP70/70 | duskull#72 HP60/60 | duskull#73 HP60/60
+  opp hand=5 deck=42 prizes=6 discard=2 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":11,"target":{"kind":"own_bench","index":0}}
+    [2] {"id":"play_card","entity_id":9,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":4}
+    [4] {"id":"play_card","entity_id":15,"target":{"kind":"own_bench","index":1}}
+    [5] {"id":"use_attack","attack_index":0}
+    [6] {"id":"retreat","to_bench_index":0}
+    [7] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"play_card","entity_id":11,"target":{"kind":"own_bench","index":0}}
+[event] seq=100 actor=Me Evolve { player: P1, from: 6, to: 11 }
+
+== request r-0032 (turn 6, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dragapult-ex#11 HP320/320 | duskull#12 HP60/60
+  me  hand=4 deck=41 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP190/210 E×1
+  opp bench : dreepy#63 HP70/70 | duskull#72 HP60/60 | duskull#73 HP60/60
+  opp hand=5 deck=42 prizes=6 discard=2 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":4}
+    [2] {"id":"play_card","entity_id":15,"target":{"kind":"own_bench","index":1}}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"play_card","entity_id":15,"target":{"kind":"own_bench","index":1}}
+[event] seq=101 actor=Me Evolve { player: P1, from: 12, to: 15 }
+
+== request r-0033 (turn 6, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dragapult-ex#11 HP320/320 | dusclops#15 HP90/90
+  me  hand=3 deck=41 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP190/210 E×1
+  opp bench : dreepy#63 HP70/70 | duskull#72 HP60/60 | duskull#73 HP60/60
+  opp hand=5 deck=42 prizes=6 discard=2 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":4}
+    [2] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"play_card","entity_id":4}
+[event] seq=102 actor=Me PlaceBench { player: P1, entity: 4, index: 2 }
+
+== request r-0034 (turn 6, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dragapult-ex#11 HP320/320 | dusclops#15 HP90/90 | dreepy#4 HP70/70
+  me  hand=2 deck=41 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP190/210 E×1
+  opp bench : dreepy#63 HP70/70 | duskull#72 HP60/60 | duskull#73 HP60/60
+  opp hand=5 deck=42 prizes=6 discard=2 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+    [5] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=103 actor=Me DeclareAttack { player: P1, entity: 21, attack_index: 0 }
+[event] seq=104 actor=System ApplyDamage { target: 80, amount: 10 }
+[event] seq=105 actor=System Internal { name: "effect_completed" }
+[event] seq=106 actor=Opp TurnStart { turn: 7, active_player: P2 }
+[event] seq=107 actor=Opp DrawCard { player: P2, entity: 107, deck_size_after: 41 }
+[event] seq=108 actor=Opp Evolve { player: P2, from: 63, to: 67 }
+[event] seq=109 actor=Opp UseAbility { player: P2, entity: 67, ability_index: 0 }
+[event] seq=110 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=111 actor=System Internal { name: "choice_received" }
+[event] seq=112 actor=System Internal { name: "moved" }
+[event] seq=113 actor=System Internal { name: "effect_completed" }
+[event] seq=114 actor=Opp Evolve { player: P2, from: 72, to: 74 }
+[event] seq=115 actor=Opp PlaySupporter { player: P2, entity: 94, card: 945 }
+[event] seq=116 actor=Opp Internal { name: "effect_started" }
+[event] seq=117 actor=System Internal { name: "moved" }
+[event] seq=118 actor=System Internal { name: "moved" }
+[event] seq=119 actor=System Internal { name: "moved" }
+[event] seq=120 actor=System Internal { name: "moved" }
+[event] seq=121 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=122 actor=Opp Internal { name: "drew" }
+[event] seq=123 actor=Opp Internal { name: "drew" }
+[event] seq=124 actor=Opp Internal { name: "drew" }
+[event] seq=125 actor=Opp Internal { name: "drew" }
+[event] seq=126 actor=Opp Internal { name: "drew" }
+[event] seq=127 actor=Opp Internal { name: "drew" }
+[event] seq=128 actor=Opp Internal { name: "drew" }
+[event] seq=129 actor=Opp Internal { name: "drew" }
+[event] seq=130 actor=System Internal { name: "effect_completed" }
+[event] seq=131 actor=Opp PlaceBench { player: P2, entity: 64, index: 3 }
+[event] seq=132 actor=Opp AttachEnergy { player: P2, energy: 120, to: 67 }
+[event] seq=133 actor=Me TurnStart { turn: 8, active_player: P1 }
+
+== request r-0043 (turn 8, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dragapult-ex#11 HP320/320 | dusclops#15 HP90/90 | dreepy#4 HP70/70
+  me  hand=3 deck=40 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP180/210 E×1
+  opp bench : drakloak#67 HP90/90 E×1 | dusclops#74 HP90/90 | duskull#73 HP60/60 | dreepy#64 HP70/70
+  opp hand=6 deck=36 prizes=6 discard=3 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":54,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":54,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":54,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":54,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [6] {"id":"use_attack","attack_index":0}
+    [7] {"id":"retreat","to_bench_index":0}
+    [8] {"id":"retreat","to_bench_index":1}
+    [9] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":54,"target":{"kind":"own_bench","index":0}}
+[event] seq=134 actor=Me DrawCard { player: P1, entity: 54, deck_size_after: 40 }
+[event] seq=135 actor=Me AttachEnergy { player: P1, energy: 54, to: 11 }
+
+== request r-0044 (turn 8, phase main, active me) ==
+  me  active: budew#21 HP30/30
+  me  bench : dragapult-ex#11 HP320/320 E×1 | dusclops#15 HP90/90 | dreepy#4 HP70/70
+  me  hand=2 deck=40 prizes=6 discard=4 lost=0
+  opp active: fezandipiti-ex#80 HP180/210 E×1
+  opp bench : drakloak#67 HP90/90 E×1 | dusclops#74 HP90/90 | duskull#73 HP60/60 | dreepy#64 HP70/70
+  opp hand=6 deck=36 prizes=6 discard=3 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+    [5] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=136 actor=Me DeclareAttack { player: P1, entity: 21, attack_index: 0 }
+[event] seq=137 actor=System ApplyDamage { target: 80, amount: 10 }
+[event] seq=138 actor=System Internal { name: "effect_completed" }
+[event] seq=139 actor=Opp TurnStart { turn: 9, active_player: P2 }
+[event] seq=140 actor=Opp DrawCard { player: P2, entity: 97, deck_size_after: 35 }
+[event] seq=141 actor=Opp UseAbility { player: P2, entity: 67, ability_index: 0 }
+[event] seq=142 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=143 actor=System Internal { name: "choice_received" }
+[event] seq=144 actor=System Internal { name: "moved" }
+[event] seq=145 actor=System Internal { name: "effect_completed" }
+[event] seq=146 actor=Opp Evolve { player: P2, from: 64, to: 68 }
+[event] seq=147 actor=Opp UseAbility { player: P2, entity: 68, ability_index: 0 }
+[event] seq=148 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=149 actor=System Internal { name: "choice_received" }
+[event] seq=150 actor=System Internal { name: "moved" }
+[event] seq=151 actor=System Internal { name: "effect_completed" }
+[event] seq=152 actor=Opp Evolve { player: P2, from: 74, to: 76 }
+[event] seq=153 actor=Opp PlaceBench { player: P2, entity: 81, index: 4 }
+[event] seq=154 actor=Opp PlaySupporter { player: P2, entity: 97, card: 945 }
+[event] seq=155 actor=Opp Internal { name: "effect_started" }
+[event] seq=156 actor=System Internal { name: "moved" }
+[event] seq=157 actor=System Internal { name: "moved" }
+[event] seq=158 actor=System Internal { name: "moved" }
+[event] seq=159 actor=System Internal { name: "moved" }
+[event] seq=160 actor=System Internal { name: "moved" }
+[event] seq=161 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=162 actor=Opp Internal { name: "drew" }
+[event] seq=163 actor=Opp Internal { name: "drew" }
+[event] seq=164 actor=Opp Internal { name: "drew" }
+[event] seq=165 actor=Opp Internal { name: "drew" }
+[event] seq=166 actor=Opp Internal { name: "drew" }
+[event] seq=167 actor=Opp Internal { name: "drew" }
+[event] seq=168 actor=Opp Internal { name: "drew" }
+[event] seq=169 actor=Opp Internal { name: "drew" }
+[event] seq=170 actor=System Internal { name: "effect_completed" }
+[event] seq=171 actor=Opp RetreatPokemon { player: P2, from: 80, to_bench_index: 4 }
+[event] seq=172 actor=Opp DeclareAttack { player: P2, entity: 81, attack_index: 0 }
+[event] seq=173 actor=System ApplyDamage { target: 21, amount: 10 }
+[event] seq=174 actor=System Internal { name: "effect_completed" }
+[event] seq=175 actor=Me TurnStart { turn: 10, active_player: P1 }
+
+== request r-0055 (turn 10, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dragapult-ex#11 HP320/320 E×1 | dusclops#15 HP90/90 | dreepy#4 HP70/70
+  me  hand=3 deck=39 prizes=6 discard=4 lost=0
+  opp active: budew#81 HP30/30
+  opp bench : drakloak#67 HP90/90 E×1 | dusknoir#76 HP160/160 | duskull#73 HP60/60 | drakloak#68 HP90/90 | fezandipiti-ex#80 HP170/210
+  opp hand=8 deck=30 prizes=6 discard=5 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":39}
+    [2] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+    [6] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":39}
+[event] seq=176 actor=Me DrawCard { player: P1, entity: 39, deck_size_after: 39 }
+[event] seq=177 actor=Me PlaySupporter { player: P1, entity: 39, card: 298 }
+[event] seq=178 actor=Me Internal { name: "effect_started" }
+[event] seq=179 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0056 (parent r-0055, choose 0..2) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":55,"card":"fire-energy"},{"entity_id":58,"card":"psychic-energy"}]}
+  >> choice: selected=[58, 55] counts=[] yes=None branch=None
+[event] seq=180 actor=System Internal { name: "choice_received" }
+[event] seq=181 actor=System Internal { name: "moved" }
+[event] seq=182 actor=System Internal { name: "moved" }
+[event] seq=183 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=184 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0057 (parent r-0055, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":58,"card":"psychic-energy"},{"entity_id":55,"card":"fire-energy"}]}
+  >> choice: selected=[58] counts=[] yes=None branch=None
+[event] seq=185 actor=System Internal { name: "choice_received" }
+[event] seq=186 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0058 (parent r-0055, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":21,"card":"budew"},{"entity_id":11,"card":"dragapult-ex"},{"entity_id":15,"card":"dusclops"},{"entity_id":4,"card":"dreepy"}]}
+  >> choice: selected=[11] counts=[] yes=None branch=None
+[event] seq=187 actor=System Internal { name: "choice_received" }
+[event] seq=188 actor=System Internal { name: "effect_completed" }
+
+== request r-0059 (turn 10, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dragapult-ex#11 HP320/320 E×2 | dusclops#15 HP90/90 | dreepy#4 HP70/70
+  me  hand=3 deck=37 prizes=6 discard=5 lost=0
+  opp active: budew#81 HP30/30
+  opp bench : drakloak#67 HP90/90 E×1 | dusknoir#76 HP160/160 | duskull#73 HP60/60 | drakloak#68 HP90/90 | fezandipiti-ex#80 HP170/210
+  opp hand=8 deck=30 prizes=6 discard=5 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":55,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":55,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":55,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":55,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [6] {"id":"use_attack","attack_index":0}
+    [7] {"id":"retreat","to_bench_index":0}
+    [8] {"id":"retreat","to_bench_index":1}
+    [9] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":55,"target":{"kind":"own_bench","index":2}}
+[event] seq=189 actor=Me AttachEnergy { player: P1, energy: 55, to: 4 }
+
+== request r-0060 (turn 10, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dragapult-ex#11 HP320/320 E×2 | dusclops#15 HP90/90 | dreepy#4 HP70/70 E×1
+  me  hand=2 deck=37 prizes=6 discard=5 lost=0
+  opp active: budew#81 HP30/30
+  opp bench : drakloak#67 HP90/90 E×1 | dusknoir#76 HP160/160 | duskull#73 HP60/60 | drakloak#68 HP90/90 | fezandipiti-ex#80 HP170/210
+  opp hand=8 deck=30 prizes=6 discard=5 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+    [5] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"retreat","to_bench_index":0}
+[event] seq=190 actor=Me RetreatPokemon { player: P1, from: 21, to_bench_index: 0 }
+
+== request r-0061 (turn 10, phase main, active me) ==
+  me  active: dragapult-ex#11 HP320/320 E×2
+  me  bench : dreepy#4 HP70/70 E×1 | dusclops#15 HP90/90 | budew#21 HP20/30
+  me  hand=2 deck=37 prizes=6 discard=5 lost=0
+  opp active: budew#81 HP30/30
+  opp bench : drakloak#67 HP90/90 E×1 | dusknoir#76 HP160/160 | duskull#73 HP60/60 | drakloak#68 HP90/90 | fezandipiti-ex#80 HP170/210
+  opp hand=8 deck=30 prizes=6 discard=5 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"use_attack","attack_index":1}
+  >> chose: {"id":"use_attack","attack_index":1}
+[event] seq=191 actor=Me DeclareAttack { player: P1, entity: 11, attack_index: 1 }
+[event] seq=192 actor=System ApplyDamage { target: 81, amount: 200 }
+[event] seq=193 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0062 (parent r-0061, choose 0..6) --
+  kind: {"kind":"distribute_damage","eligible":[67,76,73,68,80],"total":6}
+  >> choice: selected=[73] counts=[6] yes=None branch=None
+[event] seq=194 actor=System Internal { name: "choice_received" }
+[event] seq=195 actor=System ApplyDamage { target: 73, amount: 60 }
+[event] seq=196 actor=System Internal { name: "effect_completed" }
+[event] seq=197 actor=System Internal { name: "moved" }
+[event] seq=198 actor=System KnockOut { entity: 81 }
+[event] seq=199 actor=Me TakePrize { player: P1, entity: 40 }
+[event] seq=200 actor=System Internal { name: "moved" }
+[event] seq=201 actor=System KnockOut { entity: 73 }
+[event] seq=202 actor=Me TakePrize { player: P1, entity: 10 }
+[event] seq=203 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=204 actor=Opp TurnStart { turn: 11, active_player: P2 }
+[event] seq=205 actor=Opp DrawCard { player: P2, entity: 91, deck_size_after: 29 }
+[event] seq=206 actor=Opp UseAbility { player: P2, entity: 67, ability_index: 0 }
+[event] seq=207 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=208 actor=System Internal { name: "choice_received" }
+[event] seq=209 actor=System Internal { name: "moved" }
+[event] seq=210 actor=System Internal { name: "effect_completed" }
+[event] seq=211 actor=Opp UseAbility { player: P2, entity: 68, ability_index: 0 }
+[event] seq=212 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=213 actor=System Internal { name: "choice_received" }
+[event] seq=214 actor=System Internal { name: "moved" }
+[event] seq=215 actor=System Internal { name: "effect_completed" }
+[event] seq=216 actor=Opp UseAbility { player: P2, entity: 80, ability_index: 0 }
+[event] seq=217 actor=Opp Internal { name: "drew" }
+[event] seq=218 actor=Opp Internal { name: "drew" }
+[event] seq=219 actor=Opp Internal { name: "drew" }
+[event] seq=220 actor=System Internal { name: "effect_completed" }
+[event] seq=221 actor=Opp PlaceBench { player: P2, entity: 82, index: 3 }
+[event] seq=222 actor=Opp AttachEnergy { player: P2, energy: 114, to: 67 }
+[event] seq=223 actor=Opp Evolve { player: P2, from: 67, to: 70 }
+[event] seq=224 actor=Opp PlaySupporter { player: P2, entity: 96, card: 945 }
+[event] seq=225 actor=Opp Internal { name: "effect_started" }
+[event] seq=226 actor=System Internal { name: "moved" }
+[event] seq=227 actor=System Internal { name: "moved" }
+[event] seq=228 actor=System Internal { name: "moved" }
+[event] seq=229 actor=System Internal { name: "moved" }
+[event] seq=230 actor=System Internal { name: "moved" }
+[event] seq=231 actor=System Internal { name: "moved" }
+[event] seq=232 actor=System Internal { name: "moved" }
+[event] seq=233 actor=System Internal { name: "moved" }
+[event] seq=234 actor=System Internal { name: "moved" }
+[event] seq=235 actor=System Internal { name: "moved" }
+[event] seq=236 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=237 actor=Opp Internal { name: "drew" }
+[event] seq=238 actor=Opp Internal { name: "drew" }
+[event] seq=239 actor=Opp Internal { name: "drew" }
+[event] seq=240 actor=Opp Internal { name: "drew" }
+[event] seq=241 actor=Opp Internal { name: "drew" }
+[event] seq=242 actor=Opp Internal { name: "drew" }
+[event] seq=243 actor=Opp Internal { name: "drew" }
+[event] seq=244 actor=Opp Internal { name: "drew" }
+[event] seq=245 actor=System Internal { name: "effect_completed" }
+[event] seq=246 actor=Opp UseAbility { player: P2, entity: 76, ability_index: 0 }
+[event] seq=247 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=248 actor=System Internal { name: "choice_received" }
+[event] seq=249 actor=System ApplyDamage { target: 11, amount: 130 }
+[event] seq=250 actor=System Internal { name: "effect_completed" }
+[event] seq=251 actor=System Internal { name: "moved" }
+[event] seq=252 actor=System KnockOut { entity: 76 }
+[event] seq=253 actor=Me TakePrize { player: P1, entity: 1 }
+[event] seq=254 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=255 actor=Opp RetreatPokemon { player: P2, from: 82, to_bench_index: 0 }
+[event] seq=256 actor=Opp DeclareAttack { player: P2, entity: 70, attack_index: 1 }
+[event] seq=257 actor=System ApplyDamage { target: 11, amount: 200 }
+[event] seq=258 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=259 actor=System Internal { name: "choice_received" }
+[event] seq=260 actor=System ApplyDamage { target: 4, amount: 30 }
+[event] seq=261 actor=System ApplyDamage { target: 15, amount: 30 }
+[event] seq=262 actor=System Internal { name: "effect_completed" }
+[event] seq=263 actor=System Internal { name: "moved" }
+[event] seq=264 actor=System KnockOut { entity: 11 }
+[event] seq=265 actor=Opp TakePrize { player: P2, entity: 115 }
+[event] seq=266 actor=Opp TakePrize { player: P2, entity: 98 }
+[event] seq=267 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0079 (parent r-0077, choose 1..1) --
+  kind: {"kind":"replace_active_after_ko","bench_options":[4,15,21]}
+  >> choice: selected=[21] counts=[] yes=None branch=None
+[event] seq=268 actor=Me TurnStart { turn: 12, active_player: P1 }
+
+== request r-0080 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90
+  me  hand=6 deck=36 prizes=3 discard=10 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=10 deck=26 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":41}
+    [2] {"id":"play_card","entity_id":40}
+    [3] {"id":"play_card","entity_id":1}
+    [4] {"id":"play_card","entity_id":23}
+    [5] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [6] {"id":"use_attack","attack_index":0}
+    [7] {"id":"retreat","to_bench_index":0}
+    [8] {"id":"retreat","to_bench_index":1}
+  >> chose: {"id":"play_card","entity_id":1}
+[event] seq=269 actor=Me DrawCard { player: P1, entity: 23, deck_size_after: 36 }
+[event] seq=270 actor=Me PlaceBench { player: P1, entity: 1, index: 2 }
+
+== request r-0081 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70
+  me  hand=5 deck=36 prizes=3 discard=10 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=10 deck=26 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":41}
+    [2] {"id":"play_card","entity_id":40}
+    [3] {"id":"play_card","entity_id":23}
+    [4] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [5] {"id":"use_attack","attack_index":0}
+    [6] {"id":"retreat","to_bench_index":0}
+    [7] {"id":"retreat","to_bench_index":1}
+    [8] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":23}
+[event] seq=271 actor=Me PlayItem { player: P1, entity: 23, card: 1815 }
+[event] seq=272 actor=Me Internal { name: "effect_started" }
+[event] seq=273 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0082 (parent r-0081, choose 2..2) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":41,"card":"unfair-stamp"},{"entity_id":9,"card":"dragapult-ex"},{"entity_id":40,"card":"jamming-tower"},{"entity_id":10,"card":"dragapult-ex"}]}
+  >> choice: selected=[9, 10] counts=[] yes=None branch=None
+[event] seq=274 actor=System Internal { name: "choice_received" }
+[event] seq=275 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=276 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=277 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0083 (parent r-0081, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":7,"card":"drakloak"},{"entity_id":20,"card":"fezandipiti-ex"},{"entity_id":16,"card":"dusknoir"},{"entity_id":17,"card":"dusknoir"},{"entity_id":22,"card":"budew"},{"entity_id":14,"card":"dusclops"},{"entity_id":5,"card":"drakloak"},{"entity_id":3,"card":"dreepy"},{"entity_id":18,"card":"meowth-ex"},{"entity_id":19,"card":"meowth-ex"},{"entity_id":8,"card":"drakloak"},{"entity_id":13,"card":"duskull"}]}
+  >> choice: selected=[22] counts=[] yes=None branch=None
+[event] seq=278 actor=System Internal { name: "choice_received" }
+[event] seq=279 actor=System Internal { name: "moved" }
+[event] seq=280 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=281 actor=System Internal { name: "effect_completed" }
+
+== request r-0084 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70
+  me  hand=3 deck=35 prizes=3 discard=13 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=10 deck=26 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":41}
+    [2] {"id":"play_card","entity_id":40}
+    [3] {"id":"play_card","entity_id":22}
+    [4] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [5] {"id":"use_attack","attack_index":0}
+    [6] {"id":"retreat","to_bench_index":0}
+    [7] {"id":"retreat","to_bench_index":1}
+    [8] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":22}
+[event] seq=282 actor=Me PlaceBench { player: P1, entity: 22, index: 3 }
+
+== request r-0085 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70 | budew#22 HP30/30
+  me  hand=2 deck=35 prizes=3 discard=13 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=10 deck=26 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":41}
+    [2] {"id":"play_card","entity_id":40}
+    [3] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [4] {"id":"use_attack","attack_index":0}
+    [5] {"id":"retreat","to_bench_index":0}
+    [6] {"id":"retreat","to_bench_index":1}
+    [7] {"id":"retreat","to_bench_index":2}
+    [8] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":41}
+[event] seq=283 actor=Me PlayItem { player: P1, entity: 41, card: 1817 }
+[event] seq=284 actor=Me Internal { name: "effect_started" }
+[event] seq=285 actor=System Internal { name: "moved" }
+[event] seq=286 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=287 actor=System Internal { name: "moved" }
+[event] seq=288 actor=System Internal { name: "moved" }
+[event] seq=289 actor=System Internal { name: "moved" }
+[event] seq=290 actor=System Internal { name: "moved" }
+[event] seq=291 actor=System Internal { name: "moved" }
+[event] seq=292 actor=System Internal { name: "moved" }
+[event] seq=293 actor=System Internal { name: "moved" }
+[event] seq=294 actor=System Internal { name: "moved" }
+[event] seq=295 actor=System Internal { name: "moved" }
+[event] seq=296 actor=System Internal { name: "moved" }
+[event] seq=297 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=298 actor=Me Internal { name: "drew" }
+[event] seq=299 actor=Me Internal { name: "drew" }
+[event] seq=300 actor=Me Internal { name: "drew" }
+[event] seq=301 actor=Me Internal { name: "drew" }
+[event] seq=302 actor=Me Internal { name: "drew" }
+[event] seq=303 actor=Opp Internal { name: "drew" }
+[event] seq=304 actor=Opp Internal { name: "drew" }
+[event] seq=305 actor=System Internal { name: "effect_completed" }
+
+== request r-0086 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70 | budew#22 HP30/30
+  me  hand=5 deck=31 prizes=3 discard=14 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=2 deck=34 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":35}
+    [2] {"id":"play_card","entity_id":53,"target":{"kind":"own_active"}}
+    [3] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":0}}
+    [4] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":1}}
+    [5] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":2}}
+    [6] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":3}}
+    [7] {"id":"play_card","entity_id":57,"target":{"kind":"own_active"}}
+    [8] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":0}}
+    [9] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":1}}
+    [10] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":2}}
+    [11] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":3}}
+    [12] {"id":"play_card","entity_id":31}
+    [13] {"id":"play_card","entity_id":25}
+    [14] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [15] {"id":"use_attack","attack_index":0}
+    [16] {"id":"retreat","to_bench_index":0}
+    [17] {"id":"retreat","to_bench_index":1}
+    [18] {"id":"retreat","to_bench_index":2}
+    [19] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":31}
+[event] seq=306 actor=Me PlayItem { player: P1, entity: 31, card: 173 }
+[event] seq=307 actor=Me Internal { name: "effect_started" }
+[event] seq=308 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0087 (parent r-0086, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":13,"card":"duskull"},{"entity_id":3,"card":"dreepy"}]}
+  >> choice: selected=[3] counts=[] yes=None branch=None
+[event] seq=309 actor=System Internal { name: "choice_received" }
+[event] seq=310 actor=System Internal { name: "moved" }
+[event] seq=311 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=312 actor=System Internal { name: "effect_completed" }
+
+== request r-0088 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70 | budew#22 HP30/30 | dreepy#3 HP70/70
+  me  hand=4 deck=30 prizes=3 discard=15 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=2 deck=34 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":35}
+    [2] {"id":"play_card","entity_id":53,"target":{"kind":"own_active"}}
+    [3] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":0}}
+    [4] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":1}}
+    [5] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":2}}
+    [6] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":3}}
+    [7] {"id":"play_card","entity_id":53,"target":{"kind":"own_bench","index":4}}
+    [8] {"id":"play_card","entity_id":57,"target":{"kind":"own_active"}}
+    [9] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":0}}
+    [10] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":1}}
+    [11] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":2}}
+    [12] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":3}}
+    [13] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":4}}
+    [14] {"id":"play_card","entity_id":25}
+    [15] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [16] {"id":"use_attack","attack_index":0}
+    [17] {"id":"retreat","to_bench_index":0}
+    [18] {"id":"retreat","to_bench_index":1}
+    [19] {"id":"retreat","to_bench_index":2}
+    [20] {"id":"retreat","to_bench_index":3}
+    [21] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"play_card","entity_id":25}
+[event] seq=313 actor=Me PlayItem { player: P1, entity: 25, card: 1815 }
+[event] seq=314 actor=Me Internal { name: "effect_started" }
+[event] seq=315 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0089 (parent r-0088, choose 2..2) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":35,"card":"lillie-s-determination"},{"entity_id":53,"card":"fire-energy"},{"entity_id":57,"card":"psychic-energy"}]}
+  >> choice: selected=[53, 35] counts=[] yes=None branch=None
+[event] seq=316 actor=System Internal { name: "choice_received" }
+[event] seq=317 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=318 actor=Me Internal { name: "discarded_from_hand" }
+[event] seq=319 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0090 (parent r-0088, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":19,"card":"meowth-ex"},{"entity_id":20,"card":"fezandipiti-ex"},{"entity_id":7,"card":"drakloak"},{"entity_id":17,"card":"dusknoir"},{"entity_id":8,"card":"drakloak"},{"entity_id":16,"card":"dusknoir"},{"entity_id":13,"card":"duskull"},{"entity_id":14,"card":"dusclops"},{"entity_id":5,"card":"drakloak"},{"entity_id":18,"card":"meowth-ex"}]}
+  >> choice: selected=[19] counts=[] yes=None branch=None
+[event] seq=320 actor=System Internal { name: "choice_received" }
+[event] seq=321 actor=System Internal { name: "moved" }
+[event] seq=322 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=323 actor=System Internal { name: "effect_completed" }
+
+== request r-0091 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×1 | dusclops#15 HP60/90 | dreepy#1 HP70/70 | budew#22 HP30/30 | dreepy#3 HP70/70
+  me  hand=2 deck=29 prizes=3 discard=18 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=2 deck=34 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":57,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":4}}
+    [7] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [8] {"id":"use_attack","attack_index":0}
+    [9] {"id":"retreat","to_bench_index":0}
+    [10] {"id":"retreat","to_bench_index":1}
+    [11] {"id":"retreat","to_bench_index":2}
+    [12] {"id":"retreat","to_bench_index":3}
+    [13] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"play_card","entity_id":57,"target":{"kind":"own_bench","index":0}}
+[event] seq=324 actor=Me AttachEnergy { player: P1, energy: 57, to: 4 }
+
+== request r-0092 (turn 12, phase main, active me) ==
+  me  active: budew#21 HP20/30
+  me  bench : dreepy#4 HP40/70 E×2 | dusclops#15 HP60/90 | dreepy#1 HP70/70 | budew#22 HP30/30 | dreepy#3 HP70/70
+  me  hand=1 deck=29 prizes=3 discard=18 lost=0
+  opp active: dragapult-ex#70 HP320/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=2 deck=34 prizes=4 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+    [5] {"id":"retreat","to_bench_index":2}
+    [6] {"id":"retreat","to_bench_index":3}
+    [7] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=325 actor=Me DeclareAttack { player: P1, entity: 21, attack_index: 0 }
+[event] seq=326 actor=System ApplyDamage { target: 70, amount: 10 }
+[event] seq=327 actor=System Internal { name: "effect_completed" }
+[event] seq=328 actor=Opp TurnStart { turn: 13, active_player: P2 }
+[event] seq=329 actor=Opp DrawCard { player: P2, entity: 75, deck_size_after: 33 }
+[event] seq=330 actor=Opp UseAbility { player: P2, entity: 68, ability_index: 0 }
+[event] seq=331 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=332 actor=System Internal { name: "choice_received" }
+[event] seq=333 actor=System Internal { name: "moved" }
+[event] seq=334 actor=System Internal { name: "effect_completed" }
+[event] seq=335 actor=Opp DeclareAttack { player: P2, entity: 70, attack_index: 1 }
+[event] seq=336 actor=System ApplyDamage { target: 21, amount: 200 }
+[event] seq=337 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=338 actor=System Internal { name: "choice_received" }
+[event] seq=339 actor=System ApplyDamage { target: 4, amount: 40 }
+[event] seq=340 actor=System ApplyDamage { target: 1, amount: 20 }
+[event] seq=341 actor=System Internal { name: "effect_completed" }
+[event] seq=342 actor=System Internal { name: "moved" }
+[event] seq=343 actor=System KnockOut { entity: 21 }
+[event] seq=344 actor=Opp TakePrize { player: P2, entity: 104 }
+[event] seq=345 actor=System Internal { name: "moved" }
+[event] seq=346 actor=System KnockOut { entity: 4 }
+[event] seq=347 actor=Opp TakePrize { player: P2, entity: 86 }
+[event] seq=348 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0097 (parent r-0095, choose 1..1) --
+  kind: {"kind":"replace_active_after_ko","bench_options":[15,1,22,3]}
+  >> choice: selected=[22] counts=[] yes=None branch=None
+[event] seq=349 actor=Me TurnStart { turn: 14, active_player: P1 }
+
+== request r-0098 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | dreepy#1 HP50/70 | dreepy#3 HP70/70
+  me  hand=2 deck=28 prizes=3 discard=22 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":19}
+    [2] {"id":"play_card","entity_id":13}
+    [3] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [4] {"id":"use_attack","attack_index":0}
+    [5] {"id":"retreat","to_bench_index":0}
+    [6] {"id":"retreat","to_bench_index":1}
+    [7] {"id":"retreat","to_bench_index":2}
+  >> chose: {"id":"play_card","entity_id":13}
+[event] seq=350 actor=Me DrawCard { player: P1, entity: 13, deck_size_after: 28 }
+[event] seq=351 actor=Me PlaceBench { player: P1, entity: 13, index: 3 }
+
+== request r-0099 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | dreepy#1 HP50/70 | dreepy#3 HP70/70 | duskull#13 HP60/60
+  me  hand=1 deck=28 prizes=3 discard=22 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":19}
+    [2] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+    [6] {"id":"retreat","to_bench_index":2}
+    [7] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":19}
+[event] seq=352 actor=Me PlaceBench { player: P1, entity: 19, index: 4 }
+[event] seq=353 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0100 (parent r-0099, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":34,"card":"lillie-s-determination"},{"entity_id":38,"card":"crispin"},{"entity_id":36,"card":"lillie-s-determination"},{"entity_id":52,"card":"boss-s-orders"},{"entity_id":50,"card":"boss-s-orders"},{"entity_id":37,"card":"lillie-s-determination"}]}
+  >> choice: selected=[34] counts=[] yes=None branch=None
+[event] seq=354 actor=System Internal { name: "choice_received" }
+[event] seq=355 actor=System Internal { name: "moved" }
+[event] seq=356 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=357 actor=System Internal { name: "effect_completed" }
+
+== request r-0101 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | dreepy#1 HP50/70 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=1 deck=27 prizes=3 discard=22 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":34}
+    [2] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+    [6] {"id":"retreat","to_bench_index":2}
+    [7] {"id":"retreat","to_bench_index":3}
+    [8] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"play_card","entity_id":34}
+[event] seq=358 actor=Me PlaySupporter { player: P1, entity: 34, card: 945 }
+[event] seq=359 actor=Me Internal { name: "effect_started" }
+[event] seq=360 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=361 actor=Me Internal { name: "drew" }
+[event] seq=362 actor=Me Internal { name: "drew" }
+[event] seq=363 actor=Me Internal { name: "drew" }
+[event] seq=364 actor=Me Internal { name: "drew" }
+[event] seq=365 actor=Me Internal { name: "drew" }
+[event] seq=366 actor=Me Internal { name: "drew" }
+[event] seq=367 actor=System Internal { name: "effect_completed" }
+
+== request r-0102 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | dreepy#1 HP50/70 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=6 deck=21 prizes=3 discard=23 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":7,"target":{"kind":"own_bench","index":1}}
+    [2] {"id":"play_card","entity_id":7,"target":{"kind":"own_bench","index":2}}
+    [3] {"id":"play_card","entity_id":16,"target":{"kind":"own_bench","index":0}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [6] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [7] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [8] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [9] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":4}}
+    [10] {"id":"play_card","entity_id":45}
+    [11] {"id":"play_card","entity_id":40}
+    [12] {"id":"play_card","entity_id":48}
+    [13] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [14] {"id":"use_attack","attack_index":0}
+    [15] {"id":"retreat","to_bench_index":0}
+    [16] {"id":"retreat","to_bench_index":1}
+    [17] {"id":"retreat","to_bench_index":2}
+    [18] {"id":"retreat","to_bench_index":3}
+    [19] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"play_card","entity_id":7,"target":{"kind":"own_bench","index":1}}
+[event] seq=368 actor=Me Evolve { player: P1, from: 1, to: 7 }
+
+== request r-0103 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | drakloak#7 HP70/90 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=5 deck=21 prizes=3 discard=23 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":16,"target":{"kind":"own_bench","index":0}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [6] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [7] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":4}}
+    [8] {"id":"play_card","entity_id":45}
+    [9] {"id":"play_card","entity_id":40}
+    [10] {"id":"play_card","entity_id":48}
+    [11] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [12] {"id":"use_ability","entity_id":7,"ability_index":0}
+    [13] {"id":"use_attack","attack_index":0}
+    [14] {"id":"retreat","to_bench_index":0}
+    [15] {"id":"retreat","to_bench_index":1}
+    [16] {"id":"retreat","to_bench_index":2}
+    [17] {"id":"retreat","to_bench_index":3}
+    [18] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"use_ability","entity_id":7,"ability_index":0}
+[event] seq=369 actor=Me UseAbility { player: P1, entity: 7, ability_index: 0 }
+[event] seq=370 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0104 (parent r-0103, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":60,"card":"psychic-energy"},{"entity_id":36,"card":"lillie-s-determination"}]}
+  >> choice: selected=[36] counts=[] yes=None branch=None
+[event] seq=371 actor=System Internal { name: "choice_received" }
+[event] seq=372 actor=System Internal { name: "moved" }
+[event] seq=373 actor=System Internal { name: "effect_completed" }
+
+== request r-0105 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusclops#15 HP60/90 | drakloak#7 HP70/90 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=6 deck=20 prizes=3 discard=23 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":16,"target":{"kind":"own_bench","index":0}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [6] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [7] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":4}}
+    [8] {"id":"play_card","entity_id":45}
+    [9] {"id":"play_card","entity_id":40}
+    [10] {"id":"play_card","entity_id":48}
+    [11] {"id":"use_ability","entity_id":15,"ability_index":0}
+    [12] {"id":"use_attack","attack_index":0}
+    [13] {"id":"retreat","to_bench_index":0}
+    [14] {"id":"retreat","to_bench_index":1}
+    [15] {"id":"retreat","to_bench_index":2}
+    [16] {"id":"retreat","to_bench_index":3}
+    [17] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"play_card","entity_id":16,"target":{"kind":"own_bench","index":0}}
+[event] seq=374 actor=Me Evolve { player: P1, from: 15, to: 16 }
+
+== request r-0106 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : dusknoir#16 HP130/160 | drakloak#7 HP70/90 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=5 deck=20 prizes=3 discard=23 lost=0
+  opp active: dragapult-ex#70 HP310/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=6 deck=32 prizes=2 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":4}}
+    [7] {"id":"play_card","entity_id":45}
+    [8] {"id":"play_card","entity_id":40}
+    [9] {"id":"play_card","entity_id":48}
+    [10] {"id":"use_ability","entity_id":16,"ability_index":0}
+    [11] {"id":"use_attack","attack_index":0}
+    [12] {"id":"retreat","to_bench_index":0}
+    [13] {"id":"retreat","to_bench_index":1}
+    [14] {"id":"retreat","to_bench_index":2}
+    [15] {"id":"retreat","to_bench_index":3}
+    [16] {"id":"retreat","to_bench_index":4}
+  >> chose: {"id":"use_ability","entity_id":16,"ability_index":0}
+[event] seq=375 actor=Me UseAbility { player: P1, entity: 16, ability_index: 0 }
+[event] seq=376 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0107 (parent r-0106, choose 1..1) --
+  kind: {"kind":"choose_target_pokemon","targets":[70,80,68,82]}
+  >> choice: selected=[70] counts=[] yes=None branch=None
+[event] seq=377 actor=System Internal { name: "choice_received" }
+[event] seq=378 actor=System ApplyDamage { target: 70, amount: 130 }
+[event] seq=379 actor=System Internal { name: "effect_completed" }
+[event] seq=380 actor=System Internal { name: "moved" }
+[event] seq=381 actor=System KnockOut { entity: 16 }
+[event] seq=382 actor=Opp TakePrize { player: P2, entity: 87 }
+
+== request r-0108 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=5 deck=20 prizes=3 discard=26 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":45}
+    [7] {"id":"play_card","entity_id":40}
+    [8] {"id":"play_card","entity_id":48}
+    [9] {"id":"use_attack","attack_index":0}
+    [10] {"id":"retreat","to_bench_index":0}
+    [11] {"id":"retreat","to_bench_index":1}
+    [12] {"id":"retreat","to_bench_index":2}
+    [13] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":45}
+[event] seq=383 actor=Me PlayItem { player: P1, entity: 45, card: 1322 }
+[event] seq=384 actor=Me Internal { name: "effect_started" }
+[event] seq=385 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0109 (parent r-0108, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":8,"card":"drakloak"},{"entity_id":5,"card":"drakloak"},{"entity_id":14,"card":"dusclops"},{"entity_id":17,"card":"dusknoir"}]}
+  >> choice: selected=[8] counts=[] yes=None branch=None
+[event] seq=386 actor=System Internal { name: "choice_received" }
+[event] seq=387 actor=System Internal { name: "moved" }
+[event] seq=388 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=389 actor=System Internal { name: "effect_completed" }
+
+== request r-0110 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 | dreepy#3 HP70/70 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=5 deck=19 prizes=3 discard=27 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":40}
+    [7] {"id":"play_card","entity_id":48}
+    [8] {"id":"play_card","entity_id":8,"target":{"kind":"own_bench","index":1}}
+    [9] {"id":"use_attack","attack_index":0}
+    [10] {"id":"retreat","to_bench_index":0}
+    [11] {"id":"retreat","to_bench_index":1}
+    [12] {"id":"retreat","to_bench_index":2}
+    [13] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":8,"target":{"kind":"own_bench","index":1}}
+[event] seq=390 actor=Me Evolve { player: P1, from: 3, to: 8 }
+
+== request r-0111 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 | drakloak#8 HP90/90 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=4 deck=19 prizes=3 discard=27 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":40}
+    [7] {"id":"play_card","entity_id":48}
+    [8] {"id":"use_ability","entity_id":8,"ability_index":0}
+    [9] {"id":"use_attack","attack_index":0}
+    [10] {"id":"retreat","to_bench_index":0}
+    [11] {"id":"retreat","to_bench_index":1}
+    [12] {"id":"retreat","to_bench_index":2}
+    [13] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"use_ability","entity_id":8,"ability_index":0}
+[event] seq=391 actor=Me UseAbility { player: P1, entity: 8, ability_index: 0 }
+[event] seq=392 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0112 (parent r-0111, choose 1..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":46,"card":"poke-pad"},{"entity_id":44,"card":"poke-pad"}]}
+  >> choice: selected=[46] counts=[] yes=None branch=None
+[event] seq=393 actor=System Internal { name: "choice_received" }
+[event] seq=394 actor=System Internal { name: "moved" }
+[event] seq=395 actor=System Internal { name: "effect_completed" }
+
+== request r-0113 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 | drakloak#8 HP90/90 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=5 deck=18 prizes=3 discard=27 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":40}
+    [7] {"id":"play_card","entity_id":48}
+    [8] {"id":"play_card","entity_id":46}
+    [9] {"id":"use_attack","attack_index":0}
+    [10] {"id":"retreat","to_bench_index":0}
+    [11] {"id":"retreat","to_bench_index":1}
+    [12] {"id":"retreat","to_bench_index":2}
+    [13] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":46}
+[event] seq=396 actor=Me PlayItem { player: P1, entity: 46, card: 1322 }
+[event] seq=397 actor=Me Internal { name: "effect_started" }
+[event] seq=398 actor=Me Internal { name: "prompt_issued" }
+
+-- prompt p-0114 (parent r-0113, choose 0..1) --
+  kind: {"kind":"choose_from_zone","zone":"deck","options":[{"entity_id":14,"card":"dusclops"},{"entity_id":5,"card":"drakloak"},{"entity_id":17,"card":"dusknoir"}]}
+  >> choice: selected=[] counts=[] yes=None branch=None
+[event] seq=399 actor=System Internal { name: "choice_received" }
+[event] seq=400 actor=Me Internal { name: "deck_shuffled" }
+[event] seq=401 actor=System Internal { name: "effect_completed" }
+
+== request r-0115 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 | drakloak#8 HP90/90 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=4 deck=18 prizes=3 discard=28 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":56,"target":{"kind":"own_active"}}
+    [2] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+    [3] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":1}}
+    [4] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":2}}
+    [5] {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":3}}
+    [6] {"id":"play_card","entity_id":40}
+    [7] {"id":"play_card","entity_id":48}
+    [8] {"id":"use_attack","attack_index":0}
+    [9] {"id":"retreat","to_bench_index":0}
+    [10] {"id":"retreat","to_bench_index":1}
+    [11] {"id":"retreat","to_bench_index":2}
+    [12] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":56,"target":{"kind":"own_bench","index":0}}
+[event] seq=402 actor=Me AttachEnergy { player: P1, energy: 56, to: 7 }
+
+== request r-0116 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 E×1 | drakloak#8 HP90/90 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=3 deck=18 prizes=3 discard=28 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=7 deck=32 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":40}
+    [2] {"id":"play_card","entity_id":48}
+    [3] {"id":"use_attack","attack_index":0}
+    [4] {"id":"retreat","to_bench_index":0}
+    [5] {"id":"retreat","to_bench_index":1}
+    [6] {"id":"retreat","to_bench_index":2}
+    [7] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"play_card","entity_id":48}
+[event] seq=403 actor=Me PlayItem { player: P1, entity: 48, card: 1590 }
+[event] seq=404 actor=Me Internal { name: "effect_started" }
+[event] seq=405 actor=System Internal { name: "moved" }
+[event] seq=406 actor=System Internal { name: "moved" }
+[event] seq=407 actor=System Internal { name: "moved" }
+[event] seq=408 actor=System Internal { name: "moved" }
+[event] seq=409 actor=System Internal { name: "moved" }
+[event] seq=410 actor=System Internal { name: "moved" }
+[event] seq=411 actor=System Internal { name: "moved" }
+[event] seq=412 actor=Opp Internal { name: "deck_shuffled" }
+[event] seq=413 actor=Opp Internal { name: "drew" }
+[event] seq=414 actor=Opp Internal { name: "drew" }
+[event] seq=415 actor=Opp Internal { name: "drew" }
+[event] seq=416 actor=System Internal { name: "effect_completed" }
+
+== request r-0117 (turn 14, phase main, active me) ==
+  me  active: budew#22 HP30/30
+  me  bench : drakloak#7 HP70/90 E×1 | drakloak#8 HP90/90 | duskull#13 HP60/60 | meowth-ex#19 HP170/170
+  me  hand=2 deck=18 prizes=3 discard=29 lost=0
+  opp active: dragapult-ex#70 HP180/320 E×2
+  opp bench : fezandipiti-ex#80 HP170/210 | drakloak#68 HP90/90 | budew#82 HP30/30
+  opp hand=3 deck=36 prizes=1 discard=11 lost=0
+  legal actions:
+    [0] {"id":"end_turn"}
+    [1] {"id":"play_card","entity_id":40}
+    [2] {"id":"use_attack","attack_index":0}
+    [3] {"id":"retreat","to_bench_index":0}
+    [4] {"id":"retreat","to_bench_index":1}
+    [5] {"id":"retreat","to_bench_index":2}
+    [6] {"id":"retreat","to_bench_index":3}
+  >> chose: {"id":"use_attack","attack_index":0}
+[event] seq=417 actor=Me DeclareAttack { player: P1, entity: 22, attack_index: 0 }
+[event] seq=418 actor=System ApplyDamage { target: 70, amount: 10 }
+[event] seq=419 actor=System Internal { name: "effect_completed" }
+[event] seq=420 actor=Opp TurnStart { turn: 15, active_player: P2 }
+[event] seq=421 actor=Opp DrawCard { player: P2, entity: 106, deck_size_after: 35 }
+[event] seq=422 actor=Opp UseAbility { player: P2, entity: 68, ability_index: 0 }
+[event] seq=423 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=424 actor=System Internal { name: "choice_received" }
+[event] seq=425 actor=System Internal { name: "moved" }
+[event] seq=426 actor=System Internal { name: "effect_completed" }
+[event] seq=427 actor=Opp PlaceBench { player: P2, entity: 62, index: 3 }
+[event] seq=428 actor=Opp DeclareAttack { player: P2, entity: 70, attack_index: 1 }
+[event] seq=429 actor=System ApplyDamage { target: 22, amount: 200 }
+[event] seq=430 actor=Opp Internal { name: "prompt_issued" }
+[event] seq=431 actor=System Internal { name: "choice_received" }
+[event] seq=432 actor=System ApplyDamage { target: 13, amount: 60 }
+[event] seq=433 actor=System Internal { name: "effect_completed" }
+[event] seq=434 actor=System Internal { name: "moved" }
+[event] seq=435 actor=System KnockOut { entity: 22 }
+[event] seq=436 actor=Opp TakePrize { player: P2, entity: 61 }
+[event] seq=437 actor=System Internal { name: "moved" }
+[event] seq=438 actor=System KnockOut { entity: 13 }
+[event] seq=439 actor=System GameEnd { winner: Some(P2), reason: "PrizeTaken" }
+
+=== RESULT: winner=Some(P2) reason=PrizeTaken ===

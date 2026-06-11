@@ -31,7 +31,7 @@ src/
 │   ├─ random.rs
 │   ├─ dragapult_takeuchi.rs
 │   └─ dragapult_yopifutto.rs
-└─ bin/connect.rs  # subscribe → Request/Prompt 応答ループ
+└─ bin/connect.rs  # subscribe → Request/Prompt 応答ループ + 棋譜ログ (target/matches/)
 tests/wire_contract.rs   # サーバが送る JSON をデシリアライズできる契約テスト
 data/pokemon-card-data/  # カードマスタ (submodule)
 docs/protocol.md         # 通信プロトコルの JSON レベル リファレンス (実装と一致)
@@ -94,6 +94,10 @@ cargo run --release --bin connect -- --server ws://arena.ptcgtools.com:8765 \
 `connect` の intent: 無指定=open / `--room ID`=プライベートルーム / `--vs NAME`=内蔵 bot 相手 /
 `--participant-id`=ladder。各接続が `--deck` を持参 (非対称デッキ可)。
 
+対戦ごとに棋譜が `target/matches/<UTC日時>-<bot>-vs-<相手>-seed<N>/` に常時保存される
+(`--log-dir` で変更可)。`match.log` = 人間可読 (盤面要約 + 選択肢 + bot の選択 + 流れ)、
+`raw.jsonl` = 送受信メッセージの完全 JSON (1 行 1 メッセージ、リプレイ/解析用)。
+
 ## bot の足し方
 
 1. `src/bots/<name>.rs` に `BotPolicy` を実装した struct を書く。
@@ -108,6 +112,8 @@ cargo run --release --bin connect -- --server ws://arena.ptcgtools.com:8765 \
   か `EndTurn` に倒す (未実装トレーナーズの誤爆を避ける既存パターンを踏襲)。
 - **乱数は引数の `ChaCha20Rng` だけ。** `Instant`/`SystemTime`/`thread_rng` を使わない
   (シード固定の再現性を壊す)。`rng` の消費順を変えると再現性が変わる点に注意。
+  (この禁止は **bot ロジック** が対象。`bin/connect.rs` が棋譜ディレクトリ名に `SystemTime` で
+  UTC 日時を付けるのは可 — bot 判断や `rng` には一切渡さないので再現性に影響しない。)
 - bot から見えるのは **マスク済み `StateDto`** (相手の手札・山札は `card: null`) と
   サーバ列挙の `legal_actions` のみ。カード固有の数値は `CardFacts` から引く。
 

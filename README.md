@@ -107,9 +107,31 @@ cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
 | `--games N` | `1` | 繰り返し対戦数 (1 局 1 接続) |
 | `--seed S` | `42` | 乱数シード (再現性) |
 | `--cards-dir DIR` | `data/pokemon-card-data/cards` | カードデータの場所 |
+| `--log-dir DIR` | `target/matches` | 棋譜の保存先 (常時保存。下記参照) |
 | `--room` / `--vs` / `--participant-id` 他 | — | 上記 intent |
 
 `connect --help` でも一覧できます。
+
+### 棋譜ログ (常時保存)
+
+`connect` は対戦ごとに棋譜を 1 ディレクトリ自動保存します。場所は
+`<log-dir>/<UTC日時>-<bot>-vs-<相手>-seed<N>/` (既定 `target/matches/...`)。中身は 2 ファイル:
+
+| ファイル | 用途 | 内容 |
+|---|---|---|
+| `match.log` | 人が読む | `request` ごとに盤面要約 (両者の場・HP・エネ数・状態異常・手札/山札/サイド枚数) + 選択肢一覧 + bot が選んだ手。`prompt` の選択、`event` の流れ、最後に `=== RESULT: ... ===` |
+| `raw.jsonl` | 解析・リプレイ | 送受信した全メッセージを `{"t":"recv"\|"send","msg":{...}}` で 1 行ずつ。盤面 `state` / `legal_actions` / `prompt` / 応答 / `event` を完全な JSON で記録 |
+
+ディレクトリ名の日時は **UTC**。日時はファイル名にしか使わず bot 判断・乱数シードには渡さないので、
+`--seed` 固定の**再現性はそのまま**です。
+
+```text
+target/matches/2026-06-11T203914-dragapult-takeuchi-vs-dragapult-yopifutto-seed7/
+├─ match.log     # 人間可読の棋譜
+└─ raw.jsonl     # 全メッセージの JSON (1 行 1 メッセージ)
+```
+
+実際の出力例は [`docs/sample-match/`](docs/sample-match/) に収録 (上記 seed7 戦の `match.log` / `raw.jsonl`)。
 
 ---
 
