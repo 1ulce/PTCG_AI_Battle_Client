@@ -1,49 +1,54 @@
+**English** | [日本語](README.ja.md)
+
 # PTCG_AI_Battle_Client
 
-ポケモンカードゲーム (Pokémon TCG) の **対戦 AI bot** を誰でも作れるようにするための、
-リファレンス実装 + 接続クライアントです。
-[PTCG AI Battle Platform](https://arena.ptcgtools.com) の
-対戦サーバに WebSocket で接続し、bot 同士を自動対戦させられます。
+A reference implementation + connection client that lets anyone build a
+**battle AI bot** for the Pokémon Trading Card Game. It connects over WebSocket
+to the battle server of the
+[PTCG AI Battle Platform](https://arena.ptcgtools.com) and runs bot-vs-bot matches.
 
-将棋の floodgate、チェスの Lichess Bots に相当する「ポケカ版 bot アリーナ」を目指しています。
-このリポジトリを clone して `connect` を実行すれば、**今すぐ自分の bot をアリーナで戦わせられます**。
+The goal is a "Pokémon TCG bot arena" — the equivalent of shogi's floodgate or
+chess's Lichess Bots. Clone this repo and run `connect`, and you can
+**put your own bot into the arena right now**.
 
 ```
-あなたの bot (このリポジトリ)  ──WebSocket──▶  対戦サーバ (arena.ptcgtools.com)
-   choose_action / choose_prompt              ルール審判・盤面マスク・相手とのマッチング
+your bot (this repo)            ──WebSocket──▶  battle server (arena.ptcgtools.com)
+   choose_action / choose_prompt                rules / board masking / matchmaking
 ```
 
-- **ルールエンジン本体には依存しません。** サーバとは JSON プロトコルだけでやり取りします
-  (`src/wire/`)。だから軽量で、ビルドに特別な依存もいりません。
-- カード事実 (ex 判定・ワザの index) は
-  [pokemon-card-data](https://github.com/1ulce/pokemon-card-data) (submodule) から読みます。
-- 収録 bot のロジックはそのまま読めば「ポケカ bot の書き方」の実例になります。
+- **No dependency on the rules engine itself.** Communication with the server is
+  pure JSON protocol (`src/wire/`). That keeps it lightweight, with no special
+  build dependencies.
+- Card facts (ex detection, attack index) are read from
+  [pokemon-card-data](https://github.com/1ulce/pokemon-card-data) (a submodule).
+- The bundled bots' logic doubles as a worked example of "how to write a Pokémon TCG bot".
 
 ---
 
-## 収録 bot
+## Bundled bots
 
-| 名前 | 説明 |
+| Name | Description |
 |---|---|
-| `random` | 合法手・選択肢から一様ランダムに選ぶ。ベースライン兼フォールバック |
-| `dragapult-takeuchi` | Dragapult ex デッキの固定戦略・クチート竹内版ペルソナ |
-| `dragapult-yopifutto` | Dragapult ex デッキの固定戦略・よぴふっと博士版ペルソナ |
+| `random` | Picks uniformly at random from legal actions / choices. Baseline and fallback |
+| `dragapult-takeuchi` | Fixed strategy for the Dragapult ex deck — "Kuchiito Takeuchi" persona |
+| `dragapult-yopifutto` | Fixed strategy for the Dragapult ex deck — "Dr. Yopifutto" persona |
 
-戦略 bot は `decks/dragapult-ex.yaml` を持参デッキ (BYO) として前提にしています。
-ロジックの「真値」(どう判断するか) は [`docs/bots/`](docs/bots/) の機械可読仕様にあります。
+The strategy bots assume `decks/dragapult-ex.yaml` as their bring-your-own (BYO) deck.
+The "source of truth" for the logic (how they decide) lives in the machine-readable
+specs under [`docs/bots/`](docs/bots/).
 
 ---
 
-## セットアップ
+## Setup
 
-Rust 1.80+ が必要です ([rustup](https://rustup.rs/))。
+Requires Rust 1.80+ ([rustup](https://rustup.rs/)).
 
 ```sh
-# submodule (カードデータ) ごと clone する
+# Clone together with the submodule (card data)
 git clone --recurse-submodules https://github.com/1ulce/PTCG_AI_Battle_Client.git
 cd PTCG_AI_Battle_Client
 
-# すでに clone 済みなら submodule を取得
+# If you already cloned without submodules, fetch them
 git submodule update --init --recursive
 
 cargo build --release
@@ -51,14 +56,14 @@ cargo build --release
 
 ---
 
-## 対戦サーバの使い方
+## Using the battle server
 
-`connect` バイナリが、リモートの対戦サーバに WebSocket クライアントとして接続します。
-公開アリーナは **`wss://arena.ptcgtools.com`** で運用しています (TLS、ポート 443)。
+The `connect` binary acts as a WebSocket client to the remote battle server.
+The public arena runs at **`wss://arena.ptcgtools.com`** (TLS, port 443).
 
-> ℹ️ アリーナはメンテナが運用しています。応答が無いときは停止中の可能性があります。
+> ℹ️ The arena is operated by a maintainer. If it does not respond, it may be down.
 
-### いちばん簡単な例 — アリーナの内蔵 bot に挑む
+### Simplest example — challenge a built-in arena bot
 
 ```sh
 cargo run --release --bin connect -- \
@@ -69,79 +74,84 @@ cargo run --release --bin connect -- \
   --games 3
 ```
 
-### 自作 bot 同士を戦わせる (プライベートルーム)
+### Pit your own bots against each other (private room)
 
-同じ `--room` を指定した 2 接続が確実にペアになります。2 つの端末 (またはバックグラウンド)
-で起動してください。
+Two connections that pass the same `--room` are guaranteed to be paired. Start
+them in two terminals (or in the background).
 
 ```sh
-# 端末 1
+# terminal 1
 cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   --room myroom --bot dragapult-takeuchi --deck decks/dragapult-ex.yaml --games 5
 
-# 端末 2
+# terminal 2
 cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   --room myroom --bot dragapult-yopifutto --deck decks/dragapult-ex.yaml --games 5
 ```
 
-### 接続 intent
+### Connection intent
 
-接続ごとに「どう相手を探すか」を指定します。
+Each connection specifies how to find an opponent.
 
-| 指定 | 意味 |
+| Option | Meaning |
 |---|---|
-| (無指定) | open match — 誰でも先着 2 人がペアになる |
-| `--room ID` | プライベートルーム — 同じ room の 2 人を確実にペア (自作 bot 同士に最適) |
-| `--vs NAME` | サーバ内蔵 bot を相手に指名する |
-| `--participant-id ID --auth-token TOK [--bucket B]` | ladder (レーティング対戦、ladder 対応サーバが必要) |
+| (none) | open match — the first two arrivals are paired |
+| `--room ID` | private room — the two clients with the same room are paired (best for your-own-bots) |
+| `--vs NAME` | name a built-in server bot as the opponent |
+| `--participant-id ID --auth-token TOK [--bucket B]` | ladder (rated play; requires a ladder-capable server) |
 
-各接続が `--deck` を持参するので、**お互い別デッキの非対称対戦**もできます。
+Because each connection brings its own `--deck`, you can also run
+**asymmetric matches with different decks** on each side.
 
-### `connect` のオプション
+### `connect` options
 
-| フラグ | 既定 | 説明 |
+| Flag | Default | Description |
 |---|---|---|
-| `--server URL` | (必須) | 接続先。`wss://HOST` (TLS, 既定 443) / `ws://HOST:PORT` (平文) |
+| `--server URL` | (required) | Target. `wss://HOST` (TLS, default 443) / `ws://HOST:PORT` (plaintext) |
 | `--bot NAME` | `random` | `random` / `dragapult-takeuchi` / `dragapult-yopifutto` |
-| `--deck PATH` | なし | 持参デッキ YAML |
-| `--games N` | `1` | 繰り返し対戦数 (1 局 1 接続) |
-| `--seed S` | `42` | 乱数シード (再現性) |
-| `--cards-dir DIR` | `data/pokemon-card-data/cards` | カードデータの場所 |
-| `--log-dir DIR` | `target/matches` | 棋譜の保存先 (常時保存。下記参照) |
-| `--room` / `--vs` / `--participant-id` 他 | — | 上記 intent |
+| `--deck PATH` | none | BYO deck YAML |
+| `--games N` | `1` | Number of games to repeat (1 game per connection) |
+| `--seed S` | `42` | RNG seed (reproducibility) |
+| `--cards-dir DIR` | `data/pokemon-card-data/cards` | Location of card data |
+| `--log-dir DIR` | `target/matches` | Where match logs are saved (always on; see below) |
+| `--room` / `--vs` / `--participant-id`, etc. | — | Intent (above) |
 
-`connect --help` でも一覧できます。
+`connect --help` also lists them.
 
-### 棋譜ログ (常時保存)
+### Match logs (always saved)
 
-`connect` は対戦ごとに棋譜を 1 ディレクトリ自動保存します。場所は
-`<log-dir>/<UTC日時>-<bot>-vs-<相手>-seed<N>/` (既定 `target/matches/...`)。中身は 2 ファイル:
+`connect` automatically saves a log of every game into its own directory at
+`<log-dir>/<UTC-timestamp>-<bot>-vs-<opponent>-seed<N>/` (default `target/matches/...`).
+Each directory holds two files:
 
-| ファイル | 用途 | 内容 |
+| File | Use | Contents |
 |---|---|---|
-| `match.log` | 人が読む | `request` ごとに盤面要約 (両者の場・HP・エネ数・状態異常・手札/山札/サイド枚数) + 選択肢一覧 + bot が選んだ手。`prompt` の選択、`event` の流れ、最後に `=== RESULT: ... ===` |
-| `raw.jsonl` | 解析・リプレイ | 送受信した全メッセージを `{"t":"recv"\|"send","msg":{...}}` で 1 行ずつ。盤面 `state` / `legal_actions` / `prompt` / 応答 / `event` を完全な JSON で記録 |
+| `match.log` | Human-readable | Per `request`: a board summary (each side's active/bench, HP, energy count, status conditions, hand/deck/prize counts) + the list of legal actions + the action the bot chose. Plus `prompt` choices, the `event` flow, and `=== RESULT: ... ===` at the end |
+| `raw.jsonl` | Analysis / replay | Every sent/received message as `{"t":"recv"\|"send","msg":{...}}`, one per line. The board `state` / `legal_actions` / `prompt` / responses / `event` are recorded as complete JSON |
 
-ディレクトリ名の日時は **UTC**。日時はファイル名にしか使わず bot 判断・乱数シードには渡さないので、
-`--seed` 固定の**再現性はそのまま**です。
+The timestamp in the directory name is **UTC**. It is used only for the file name
+— never fed to bot decisions or the RNG — so reproducibility with a fixed `--seed`
+is unaffected.
 
 ```text
 target/matches/2026-06-11T203914-dragapult-takeuchi-vs-dragapult-yopifutto-seed7/
-├─ match.log     # 人間可読の棋譜
-└─ raw.jsonl     # 全メッセージの JSON (1 行 1 メッセージ)
+├─ match.log     # human-readable game log
+└─ raw.jsonl     # JSON of all messages (one message per line)
 ```
 
-実際の出力例は [`docs/sample-match/`](docs/sample-match/) に収録 (上記 seed7 戦の `match.log` / `raw.jsonl`)。
+A real example is included under [`docs/sample-match/`](docs/sample-match/)
+(the `match.log` / `raw.jsonl` of the seed7 game above).
 
 ---
 
-## 自分の bot を作る
+## Writing your own bot
 
-このリポジトリの主目的は **「あなたが自分の bot を書く土台」** です。手順は 2 つだけ。
+The main purpose of this repo is to be **the foundation on which you write your own bot**.
+There are only two steps.
 
-### 1. `BotPolicy` を実装する
+### 1. Implement `BotPolicy`
 
-`src/bots/<your_bot>.rs` を作り、[`BotPolicy`](src/bots/mod.rs) trait を実装します。
+Create `src/bots/<your_bot>.rs` and implement the [`BotPolicy`](src/bots/mod.rs) trait.
 
 ```rust
 use rand_chacha::ChaCha20Rng;
@@ -153,15 +163,15 @@ use crate::transport::TransportError;
 pub struct MyBot;
 
 impl BotPolicy for MyBot {
-    /// 自分の番の能動アクションを 1 つ選ぶ。`req.legal_actions` から選ぶだけ。
+    /// Choose one active action on your turn. You only pick from `req.legal_actions`.
     fn choose_action(
         &mut self,
         req: &RequestMsg,
         rng: &mut ChaCha20Rng,
     ) -> Result<ActionDto, TransportError> {
-        // req.state … 自分視点にマスクされた盤面 (StateDto)
-        // req.legal_actions … サーバが列挙した合法手。AI は「選ぶだけ」
-        // 例: とりあえず番を終える
+        // req.state … the board masked to your point of view (StateDto)
+        // req.legal_actions … the legal moves the server enumerated. The AI just "picks"
+        // e.g. just end the turn
         Ok(req
             .legal_actions
             .iter()
@@ -170,17 +180,18 @@ impl BotPolicy for MyBot {
             .unwrap_or_else(|| req.legal_actions[0].clone()))
     }
 
-    /// 効果解決中の選択 (サーチ・ダメカン配分・コイン後の先攻後攻 など) に応答する。
+    /// Respond to choices made during effect resolution (search, damage placement,
+    /// who-goes-first after a coin flip, etc.).
     fn choose_prompt(&mut self, p: &PromptMsg, rng: &mut ChaCha20Rng) -> PromptChoice {
-        // p.kind … 何を聞かれているか (PromptDto)。迷ったら RandomPolicy に委譲してよい。
+        // p.kind … what is being asked (PromptDto). When in doubt, delegate to RandomPolicy.
         crate::bots::RandomPolicy.choose_prompt(p, rng)
     }
 }
 ```
 
-### 2. レジストリに登録する
+### 2. Register it
 
-`src/bots/mod.rs` の `build` と `available` に 1 行ずつ足すだけです。
+Add one line each to `build` and `available` in `src/bots/mod.rs`.
 
 ```rust
 // available()
@@ -189,85 +200,89 @@ impl BotPolicy for MyBot {
 "my-bot" => Some(Box::new(MyBot)),
 ```
 
-これで `--bot my-bot` で動きます。
+Now it runs with `--bot my-bot`.
 
-### bot から「見えるもの」
+### What a bot can "see"
 
-- **`req.state` (`StateDto`)** — 自分視点にマスクされた盤面。自分の手札は中身が見えますが、
-  **相手の手札・山札は `card: null`** です (覗けない)。場・トラッシュ・スタジアムは全公開。
+- **`req.state` (`StateDto`)** — the board masked to your point of view. You can see
+  the contents of your own hand, but the **opponent's hand and decks are `card: null`**
+  (not peekable). The field, discard, and stadium are fully public.
   → [`src/wire/state.rs`](src/wire/state.rs)
-- **`req.legal_actions` (`Vec<ActionDto>`)** — サーバが審判として列挙した合法手。
-  不正手は送れないので、AI は **列挙から選ぶだけ**で済みます。
-- **カード事実** — HP やワザの index は盤面 DTO に全ては入っていません。
-  [`CardFacts`](src/cards.rs) が slug から `is_ex` / `attack_index` を引きます
-  (収録 bot は `decks/dragapult-ex.yaml` のカードを前提に index を解決しています)。
+- **`req.legal_actions` (`Vec<ActionDto>`)** — the legal moves the server enumerated
+  as referee. You cannot send illegal moves, so the AI just **picks from the list**.
+- **Card facts** — HP and attack indices are not entirely contained in the board DTO.
+  [`CardFacts`](src/cards.rs) looks up `is_ex` / `attack_index` from a slug (the bundled
+  bots resolve indices assuming the cards in `decks/dragapult-ex.yaml`).
 
-### 規律 (faithfulness)
+### Discipline (faithfulness)
 
-- **合法手から選ぶ。** 不明な局面で「それっぽい手」を発明せず、`RandomPolicy` に委譲するのが安全。
-- **乱数は `ChaCha20Rng` だけ**を使う (シード固定で再現可能)。`Instant`/`SystemTime` 等の
-  非決定性を持ち込まない。
-- 既存 bot のロジックを参考にするときは [`docs/bots/`](docs/bots/) の仕様も併読してください。
-
----
-
-## プロトコルの概要
-
-サーバと交わす JSON の**完全なリファレンス**は **[`docs/protocol.md`](docs/protocol.md)** にあります
-(各メッセージのキー・型・エラーコード・プロンプトへの応答の仕方・情報マスキングまで実装と一致する形で記載)。
-他言語で bot を書くときもここを見れば実装できます。型定義の一次ソースは [`src/wire/`](src/wire/)、
-互換性は `tests/wire_contract.rs` で固定しています。
-
-要点だけ:
-
-- **WebSocket** で `wss://HOST/ai-battle/v1/connect` (TLS) または `ws://HOST:PORT` に接続。1 フレーム = 1 JSON。
-- サーバ → AI: **`ServerMessage`** (`subscribed` / `event` / `request` / `prompt` / `ping` / `error`)
-- AI → サーバ: **`ClientMessage`** (`subscribe` / `response` / `choice` / `pong`)
-- 2 系統: 全体に流れる **event ストリーム** と、判断を求める **request/prompt → response/choice**。
-- **情報マスキング**: サーバが視点ごとに盤面を隠すので、相手の手札は見えません (cheat 不可)。
-- `connect` の対戦ループの実体は [`src/bin/connect.rs`](src/bin/connect.rs) にあります。
+- **Pick from legal actions.** Don't invent a "plausible-looking" move in an unknown
+  situation — delegating to `RandomPolicy` is the safe default.
+- **Use only `ChaCha20Rng`** for randomness (reproducible with a fixed seed). Don't
+  bring in non-determinism such as `Instant`/`SystemTime`.
+- When studying the existing bots' logic, also read the specs under [`docs/bots/`](docs/bots/).
 
 ---
 
-## プロジェクト構成
+## Protocol overview
+
+The **complete reference** for the JSON exchanged with the server is in
+**[`docs/protocol.md`](docs/protocol.md)** (every message's keys, types, error codes,
+how to respond to prompts, and information masking — all kept consistent with the
+implementation). You can implement a bot in another language just by reading it. The
+primary source for the type definitions is [`src/wire/`](src/wire/), and compatibility
+is pinned by `tests/wire_contract.rs`.
+
+The essentials:
+
+- Connect via **WebSocket** to `wss://HOST/ai-battle/v1/connect` (TLS) or `ws://HOST:PORT`. One frame = one JSON object.
+- Server → AI: **`ServerMessage`** (`subscribed` / `event` / `request` / `prompt` / `ping` / `error`)
+- AI → Server: **`ClientMessage`** (`subscribe` / `response` / `choice` / `pong`)
+- Two streams: the broadcast **event stream**, and the decision loop **request/prompt → response/choice**.
+- **Information masking**: the server hides the board per point of view, so you cannot see the opponent's hand (no cheating).
+- The actual battle loop of `connect` lives in [`src/bin/connect.rs`](src/bin/connect.rs).
+
+---
+
+## Project layout
 
 ```
 src/
-├─ wire/        # サーバと互換の JSON DTO (protocol / state / action / event)
-├─ cards.rs     # CardFacts: pokemon-card-data から ex 判定 / ワザ index を引く
-├─ deck.rs      # DeckList (持参デッキ YAML)
-├─ transport.rs # tungstenite WebSocket クライアント
-├─ bots/        # BotPolicy trait + 収録 bot (random / 竹内 / よぴふっと)
-└─ bin/connect.rs  # subscribe → Request/Prompt 応答ループ
-decks/          # dragapult-ex.yaml (持参デッキ)
-docs/bots/      # bot 戦略の機械可読仕様
-data/pokemon-card-data/  # カードマスタ (submodule)
-tests/wire_contract.rs   # サーバとの JSON 契約テスト
+├─ wire/        # JSON DTOs compatible with the server (protocol / state / action / event)
+├─ cards.rs     # CardFacts: looks up ex / attack index from pokemon-card-data
+├─ deck.rs      # DeckList (BYO deck YAML)
+├─ transport.rs # tungstenite WebSocket client
+├─ bots/        # BotPolicy trait + bundled bots (random / takeuchi / yopifutto)
+└─ bin/connect.rs  # subscribe → Request/Prompt response loop
+decks/          # dragapult-ex.yaml (BYO deck)
+docs/bots/      # machine-readable specs for bot strategies
+data/pokemon-card-data/  # card master (submodule)
+tests/wire_contract.rs   # JSON contract test against the server
 ```
 
-ローカル検証:
+Local checks:
 
 ```sh
-cargo test                       # bot ロジック + wire 契約テスト
+cargo test                       # bot logic + wire contract tests
 cargo clippy --all-targets -- -D warnings
 cargo fmt --check
 ```
 
 ---
 
-## ルールエンジンとの関係
+## Relationship to the rules engine
 
-このリポジトリは **bot とクライアントだけ**を含み、ルールエンジン (審判) は
-PTCG AI Battle Platform 側にあります。
-だからこそ engine に依存せず、誰でも軽量に bot を書けます。収録 bot のロジックと wire DTO は
-本体を「真値」として片方向に同期しています (詳細は [CLAUDE.md](CLAUDE.md))。
+This repo contains **only the bots and the client**; the rules engine (referee) lives
+on the PTCG AI Battle Platform side. That is exactly why it can stay engine-free and let
+anyone write a bot lightly. The bundled bots' logic and the wire DTOs are synced
+one-way from upstream as the "source of truth" (details in [CLAUDE.md](CLAUDE.md)).
 
 ---
 
-## ライセンス
+## License
 
-`MIT OR Apache-2.0` のデュアルライセンス
-([LICENSE-MIT](LICENSE-MIT) / [LICENSE-APACHE](LICENSE-APACHE))。
-submodule の `data/pokemon-card-data` はそのリポジトリのライセンスに従います。
+Dual-licensed under `MIT OR Apache-2.0`
+([LICENSE-MIT](LICENSE-MIT) / [LICENSE-APACHE](LICENSE-APACHE)).
+The `data/pokemon-card-data` submodule follows its own repository's license.
 
-Issue / Pull Request 歓迎です。新しい bot や別アーキタイプのデッキを持ち寄ってください。
+Issues / Pull Requests welcome. Bring your own new bots or different archetype decks.

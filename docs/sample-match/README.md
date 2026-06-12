@@ -1,24 +1,27 @@
-# サンプル棋譜
+**English** | [日本語](README.ja.md)
 
-`connect` が対戦ごとに自動保存する棋譜の実例です。公開アリーナ `wss://arena.ptcgtools.com` で
-`dragapult-takeuchi` (自分 / P1) が内蔵 bot `dragapult-yopifutto` (P2) に挑んだ 1 局
-(`--seed 7`)。結果は `winner=P2 reason=PrizeTaken`。
+# Sample match log
 
-再現コマンド:
+A real example of the log that `connect` saves automatically for every game. One game
+(`--seed 7`) on the public arena `wss://arena.ptcgtools.com` where `dragapult-takeuchi`
+(you / P1) challenged the built-in bot `dragapult-yopifutto` (P2). Result:
+`winner=P2 reason=PrizeTaken`.
+
+Reproduce with:
 
 ```sh
 cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   --vs dragapult-yopifutto --bot dragapult-takeuchi --deck decks/dragapult-ex.yaml --seed 7
 ```
 
-## ファイル
+## Files
 
-| ファイル | 用途 | 中身 |
+| File | Use | Contents |
 |---|---|---|
-| [`match.log`](match.log) | 人が読む | `request` ごとに盤面要約 (両者の場・HP・エネ数・状態異常・手札/山札/サイド枚数) + 選択肢一覧 + bot が選んだ手。`prompt` の選択、`event` の流れ、末尾に `=== RESULT: ... ===` |
-| [`raw.jsonl`](raw.jsonl) | 解析・リプレイ | 送受信した全メッセージを `{"t":"recv"\|"send","msg":{...}}` で 1 行ずつ記録。盤面 `state` / `legal_actions` / `prompt` / 応答 / `event` を完全な JSON で |
+| [`match.log`](match.log) | Human-readable | Per `request`: a board summary (each side's active/bench, HP, energy count, status conditions, hand/deck/prize counts) + the list of legal actions + the action the bot chose. Plus `prompt` choices, the `event` flow, and `=== RESULT: ... ===` at the end |
+| [`raw.jsonl`](raw.jsonl) | Analysis / replay | Every sent/received message as `{"t":"recv"\|"send","msg":{...}}`, one per line. The board `state` / `legal_actions` / `prompt` / responses / `event` as complete JSON |
 
-`match.log` の 1 ターン分の例 (盤面 → 選択肢 → 選んだ手):
+A single turn from `match.log` (board → legal actions → chosen move):
 
 ```text
 == request r-0032 (turn 6, phase main, active me) ==
@@ -38,4 +41,4 @@ cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   >> chose: {"id":"play_card","entity_id":15,"target":{"kind":"own_bench","index":1}}
 ```
 
-> プロトコル (キーの意味・全アクション/プロンプト種別) は [`../protocol.md`](../protocol.md) を参照。
+> For the protocol (the meaning of keys, all action / prompt kinds) see [`../protocol.md`](../protocol.md).
