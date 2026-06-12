@@ -37,9 +37,15 @@ pub enum WirePlayer {
 /// 時計スナップショット (protocol §7.2)。
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ClockSnapshot {
+    /// 自分の**総持ち時間の残り** (ms)。
     pub my_remaining_ms: u64,
+    /// 相手の総持ち時間の残り (ms)。
     pub opp_remaining_ms: u64,
     pub running_for: WireClockOwner,
+    /// `running_for == Me` のときの**この応答の実効締切** (絶対 unix ms)。
+    /// `now + min(総残り, 1手上限)` を反映するので、総残りより手前になりうる
+    /// (例: 全体10分でも1手30秒上限なら `now + 30s`)。この時刻までに応答しないと時間切れ負け。
+    /// 無制限なら省略 (None)。`my_deadline_unix_ms - 今の時刻` = この手に使える残り時間。
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub my_deadline_unix_ms: Option<u64>,
 }
