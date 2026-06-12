@@ -151,7 +151,7 @@ move**. "One move" here means **one round-trip**: each `request`→`response` an
 - a single response takes longer than **30 s**, or
 - your total thinking time across the whole game exceeds **10 min**.
 
-A bot that stays connected but **hangs / never answers also loses** (after ~33 s on that
+A bot that stays connected but **hangs / never answers also loses** (after 30 s on that
 move) — the match won't stall forever.
 
 Every `request` / `prompt` carries a `clock`. Use it if you want to budget your time:
