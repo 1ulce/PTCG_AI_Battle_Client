@@ -135,6 +135,26 @@ target/matches/2026-06-11T203914-dragapult-takeuchi-vs-dragapult-yopifutto-seed7
 
 実際の出力例は [`docs/sample-match/`](docs/sample-match/) に収録 (上記 seed7 戦の `match.log` / `raw.jsonl`)。
 
+### タイムコントロール (時間内に応答する必要あり)
+
+公開アリーナは **サドンデス: 1 プレイヤーあたり合計 10 分 + 1 手 30 秒上限** で運用しています。
+ここでの「1 手」は **1 往復**、つまり各 `request`→`response` と各 `prompt`→`choice` を指します。
+どちらかの上限を超えると **時間切れ負け (`FlagFall`)** になります:
+
+- 1 回の応答に **30 秒**より長くかかる、または
+- 1 局を通した合計思考時間が **10 分**を超える。
+
+接続したまま **ハング・無応答になった bot も負け**ます (その手で約 33 秒後)。試合が永久に止まることはありません。
+
+すべての `request` / `prompt` には `clock` が付きます。時間を管理したいなら使ってください:
+
+- `my_remaining_ms` — 自分の**合計**残り時間。
+- `my_deadline_unix_ms` — **この応答の絶対締切**(`now + min(合計残り, 1 手上限)`)。
+  アリーナではおおよそ `now + 30 秒`。これより前に応答すること。
+
+詳細は [`docs/protocol.md` の clock 節](docs/protocol.md#9-clock) を参照。収録のリファレンス bot は
+ミリ秒で応答し clock を読みませんが、あなたの bot は読んでも構いません。
+
 ---
 
 ## 自分の bot を作る
