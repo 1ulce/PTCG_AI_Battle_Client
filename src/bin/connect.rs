@@ -7,16 +7,17 @@
 //! ## 使い方
 //!
 //! ```text
-//! connect --server wss://arena.ptcgtools.com [--room ID | --vs NAME] \
+//! connect --server wss://arena.ptcgtools.com (--room ID | --vs NAME | --participant-id ID --auth-token TOK) \
 //!         --bot dragapult-takeuchi --deck decks/dragapult-ex.yaml [--games N] [--seed S] \
 //!         [--cards-dir data/pokemon-card-data/cards]
 //! ```
 //!
-//! intent (接続ごと):
-//! - 無指定        = open match (誰でも先着 2 人ペア)
+//! intent (接続ごと、いずれか必須):
 //! - `--room ID`   = プライベートルーム (同じ room の 2 人を確実にペア)
 //! - `--vs NAME`   = サーバ内蔵 bot を相手にリクエスト
 //! - `--participant-id ID --auth-token TOK [--bucket B]` = ladder (要 ladder サーバ)
+//!
+//! intent 無指定はサーバに拒否される (open = 相手無指定の先着ペアは廃止)。
 
 use std::fmt::Write as _;
 use std::io::Write as _;
@@ -80,6 +81,12 @@ fn run() -> Result<(), String> {
             bots::available(),
             cfg.bot
         ));
+    }
+    // 相手無指定の自動マッチング (open) はサーバで廃止されたので、明示 intent を要求する。
+    if cfg.vs.is_empty() && cfg.room.is_empty() && cfg.participant_id.is_empty() {
+        return Err(
+            "connect requires an intent: --room ID (private pair) / --vs NAME (built-in bot) / --participant-id ID --auth-token TOK (ladder)".to_string(),
+        );
     }
     let (host, port, secure) = parse_ws_server(&cfg.server)?;
     let endpoint = Endpoint { host, port, secure };
@@ -218,7 +225,8 @@ fn parse_args(argv: &[String]) -> Result<Option<Config>, String> {
     }))
 }
 
-/// ログ表示用の intent ラベル (`vs-bot:NAME` / `room:ID` / `ladder` / `open`)。
+/// ログ表示用の intent ラベル (`vs-bot:NAME` / `room:ID` / `ladder`)。
+/// 無指定は run() のガードで弾かれるのでここには来ない (防御的に "none")。
 fn intent_label(cfg: &Config) -> String {
     if !cfg.vs.is_empty() {
         format!("vs-bot:{}", cfg.vs)
@@ -227,7 +235,7 @@ fn intent_label(cfg: &Config) -> String {
     } else if !cfg.participant_id.is_empty() {
         "ladder".to_string()
     } else {
-        "open".to_string()
+        "none".to_string()
     }
 }
 
@@ -240,7 +248,7 @@ fn opp_label(cfg: &Config) -> String {
     } else if !cfg.participant_id.is_empty() {
         "ladder".to_string()
     } else {
-        "open".to_string()
+        "none".to_string()
     }
 }
 
@@ -650,10 +658,10 @@ mod tests {
         assert_eq!(intent_label(&c), "room:my room");
         assert_eq!(opp_label(&c), "room-my_room");
 
-        // 何も無ければ open。
+        // 何も無ければ "none" (open は廃止、run() のガードで弾かれる)。
         let c = base_cfg();
-        assert_eq!(intent_label(&c), "open");
-        assert_eq!(opp_label(&c), "open");
+        assert_eq!(intent_label(&c), "none");
+        assert_eq!(opp_label(&c), "none");
 
         // participant_id だけなら ladder。
         let mut c = base_cfg();

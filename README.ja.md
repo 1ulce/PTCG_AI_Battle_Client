@@ -88,11 +88,11 @@ cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
 
 ### 接続 intent
 
-接続ごとに「どう相手を探すか」を指定します。
+接続ごとに「どう相手を探すか」を指定します。**いずれか 1 つが必須**で、
+intent 無指定の接続はサーバに拒否されます (相手無指定の自動マッチング「open」は廃止)。
 
 | 指定 | 意味 |
 |---|---|
-| (無指定) | open match — 誰でも先着 2 人がペアになる |
 | `--room ID` | プライベートルーム — 同じ room の 2 人を確実にペア (自作 bot 同士に最適) |
 | `--vs NAME` | サーバ内蔵 bot を相手に指名する |
 | `--participant-id ID --auth-token TOK [--bucket B]` | ladder (レーティング対戦、ladder 対応サーバが必要) |

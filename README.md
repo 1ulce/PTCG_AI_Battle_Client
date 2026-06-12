@@ -91,11 +91,12 @@ cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
 
 ### Connection intent
 
-Each connection specifies how to find an opponent.
+Each connection specifies how to find an opponent. **One of these is required** —
+a connection with no intent is rejected by the server (anonymous "open" auto-matching
+has been removed).
 
 | Option | Meaning |
 |---|---|
-| (none) | open match — the first two arrivals are paired |
 | `--room ID` | private room — the two clients with the same room are paired (best for your-own-bots) |
 | `--vs NAME` | name a built-in server bot as the opponent |
 | `--participant-id ID --auth-token TOK [--bucket B]` | ladder (rated play; requires a ladder-capable server) |

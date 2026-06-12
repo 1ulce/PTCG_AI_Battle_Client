@@ -235,12 +235,13 @@ Sent first after connecting. Its **intent** routes you into a match.
 | `session_token` | string | Only on reconnect |
 | `from_seq` | uint | `0` on the first connection |
 | `participant_id` / `auth_token` / `bucket` | string | For ladder intent (empty otherwise) |
-| `room` | string | Reliably pairs two connections with the same room (empty = open) |
+| `room` | string | Reliably pairs two connections with the same room |
 | `vs_bot` | string | Names a built-in server bot as the opponent (empty = none) |
 | `decklist` | object? | BYO deck. `{name?, cards:[{slug, count}]}`. The server resolves and validates it |
 
 Intent priority (server side): known `session_token` → reconnect / `vs_bot` → vs-bot /
-`participant_id` → ladder / `room` → room / otherwise → open.
+`participant_id` → ladder / `room` → room / **otherwise (no intent) → rejected**
+(anonymous "open" auto-matching has been removed).
 
 ### `response` (AI → SV)
 

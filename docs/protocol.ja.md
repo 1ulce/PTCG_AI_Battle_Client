@@ -231,12 +231,13 @@ bot が最低限ハンドルすべきは **`request` / `prompt` / `event`(game_e
 | `session_token` | string | 再接続時のみ |
 | `from_seq` | uint | 初回は `0` |
 | `participant_id` / `auth_token` / `bucket` | string | ladder intent 用 (それ以外は空) |
-| `room` | string | 同じ room の 2 接続を確実にペア (空=open) |
+| `room` | string | 同じ room の 2 接続を確実にペア |
 | `vs_bot` | string | サーバ内蔵 bot 名を相手に指名 (空=なし) |
 | `decklist` | object? | 持参デッキ。`{name?, cards:[{slug, count}]}`。サーバが resolve・検証する |
 
 intent の優先順 (サーバ側): 既知 `session_token` → 再接続 / `vs_bot` → vs-bot /
-`participant_id` → ladder / `room` → ルーム / それ以外 → open。
+`participant_id` → ladder / `room` → ルーム / **それ以外 (intent 無指定) → 拒否**
+(相手無指定の自動マッチング「open」は廃止)。
 
 ### `response` (AI → SV)
 
