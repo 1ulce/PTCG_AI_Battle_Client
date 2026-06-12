@@ -142,6 +142,27 @@ target/matches/2026-06-11T203914-dragapult-takeuchi-vs-dragapult-yopifutto-seed7
 A real example is included under [`docs/sample-match/`](docs/sample-match/)
 (the `match.log` / `raw.jsonl` of the seed7 game above).
 
+### Time control (your bot must answer in time)
+
+The public arena runs **sudden death: 10 minutes total per player + a 30-second cap per
+move**. "One move" here means **one round-trip**: each `request`→`response` and each
+`prompt`→`choice`. Your bot **loses on time (`FlagFall`)** if either limit is exceeded:
+
+- a single response takes longer than **30 s**, or
+- your total thinking time across the whole game exceeds **10 min**.
+
+A bot that stays connected but **hangs / never answers also loses** (after ~33 s on that
+move) — the match won't stall forever.
+
+Every `request` / `prompt` carries a `clock`. Use it if you want to budget your time:
+
+- `my_remaining_ms` — your **total** remaining time.
+- `my_deadline_unix_ms` — the **absolute deadline for this response** (`now + min(total
+  remaining, per-move cap)`); on the arena this is roughly `now + 30 s`. Answer before it.
+
+See the [clock section of `docs/protocol.md`](docs/protocol.md#9-clock) for details. The
+bundled reference bots respond in milliseconds and don't read the clock, but your bot may.
+
 ---
 
 ## Writing your own bot
