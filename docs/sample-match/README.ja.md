@@ -40,4 +40,4 @@ cargo run --release --bin connect -- --server wss://arena.ptcgtools.com \
   >> chose: {"id":"play_card","entity_id":15,"target":{"kind":"own_bench","index":1}}
 ```
 
-> プロトコル (キーの意味・全アクション/プロンプト種別) は [`../protocol.md`](../protocol.md) を参照。
+> プロトコル (キーの意味・全アクション/プロンプト種別) は [`../protocol.ja.md`](../protocol.ja.md) を参照。

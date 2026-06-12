@@ -152,7 +152,7 @@ target/matches/2026-06-11T203914-dragapult-takeuchi-vs-dragapult-yopifutto-seed7
 - `my_deadline_unix_ms` — **この応答の絶対締切**(`now + min(合計残り, 1 手上限)`)。
   アリーナではおおよそ `now + 30 秒`。これより前に応答すること。
 
-詳細は [`docs/protocol.md` の clock 節](docs/protocol.md#9-clock) を参照。収録のリファレンス bot は
+詳細は [`docs/protocol.ja.md` の clock 節](docs/protocol.ja.md#9-clock) を参照。収録のリファレンス bot は
 ミリ秒で応答し clock を読みませんが、あなたの bot は読んでも構いません。
 
 ---
@@ -235,7 +235,7 @@ impl BotPolicy for MyBot {
 
 ## プロトコルの概要
 
-サーバと交わす JSON の**完全なリファレンス**は **[`docs/protocol.md`](docs/protocol.md)** にあります
+サーバと交わす JSON の**完全なリファレンス**は **[`docs/protocol.ja.md`](docs/protocol.ja.md)** にあります
 (各メッセージのキー・型・エラーコード・プロンプトへの応答の仕方・情報マスキングまで実装と一致する形で記載)。
 他言語で bot を書くときもここを見れば実装できます。型定義の一次ソースは [`src/wire/`](src/wire/)、
 互換性は `tests/wire_contract.rs` で固定しています。
