@@ -454,9 +454,15 @@ intent の優先順 (サーバ側): 既知 `session_token` → 再接続 / `vs_b
   "running_for": "me", "my_deadline_unix_ms": 1746541842500 }
 ```
 
-- `running_for`: `"me"` / `"opp"` / `"none"` (停止中)。
-- `my_deadline_unix_ms`: `running_for == "me"` のときの絶対締切時刻 (省略されることあり)。
-- `correspondence` (無制限) では実質気にしなくてよい。
+- `my_remaining_ms` / `opp_remaining_ms`: **総持ち時間の残り**（ミリ秒）。
+- `running_for`: `"me"` / `"opp"` / `"none"`（停止中）。
+- `my_deadline_unix_ms`（`running_for == "me"` のときのみ）: **この応答の実効締切**（絶対 unix ms）。
+  `now + min(総残り, 1手上限)` で計算され、**1手ごとの上限を反映するので総残りより手前になりうる**。
+  bot はこの時刻までに `response`/`choice` を返さないと時間切れ負け。`my_deadline_unix_ms - 今の時刻`
+  で「この手に使える残り時間」が分かる。無制限のときは省略（締切なし）。
+- 例: アリーナは「全体10分 + 1手30秒」なので、序盤でも `my_deadline_unix_ms ≈ now + 30s`。
+- `my_remaining_ms` はネットワーク遅延の影響を受けるので、シビアに使うなら `my_deadline_unix_ms`
+  を自分のローカル時計と比べるほうが正確。
 
 ---
 
