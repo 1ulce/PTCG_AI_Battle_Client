@@ -29,7 +29,7 @@ use ptcg_dragapult_bots::bots::{self};
 use ptcg_dragapult_bots::cards::CardFacts;
 use ptcg_dragapult_bots::deck::DeckList;
 use ptcg_dragapult_bots::transport::{TransportError, WsClient};
-use ptcg_dragapult_bots::wire::event::EventDto;
+use ptcg_dragapult_bots::wire::event::{EventDto, WirePlayerId};
 use ptcg_dragapult_bots::wire::protocol::{
     ChoiceMsg, ClientMessage, PongMsg, PromptMsg, RequestMsg, ResponseMsg, ServerMessage,
     SubscribeMsg,
@@ -225,6 +225,12 @@ fn parse_args(argv: &[String]) -> Result<Option<Config>, String> {
     }))
 }
 
+/// GameEnd のサマリ表記。`winner=None` は引き分け (両者同時に終局条件達成) なので "Draw"。
+fn game_end_summary(winner: Option<WirePlayerId>, reason: &str) -> String {
+    let w = winner.map_or_else(|| "Draw".to_string(), |p| format!("{p:?}"));
+    format!("winner={w} reason={reason}")
+}
+
 /// ログ表示用の intent ラベル (`vs-bot:NAME` / `room:ID` / `ladder`)。
 /// 無指定は run() のガードで弾かれるのでここには来ない (防御的に "none")。
 fn intent_label(cfg: &Config) -> String {
@@ -388,7 +394,7 @@ fn handle_server_msg(
                 ));
             }
             if let EventDto::GameEnd { winner, reason } = &ev.event {
-                return Ok(Some(format!("winner={winner:?} reason={reason}")));
+                return Ok(Some(game_end_summary(*winner, reason)));
             }
         }
         ServerMessage::Request(req) => {
@@ -605,9 +611,28 @@ OPTIONS:
 #[cfg(test)]
 mod tests {
     use super::{
-        fmt_utc, format_pokemon, intent_label, opp_label, parse_ws_server, sanitize, Config,
+        fmt_utc, format_pokemon, game_end_summary, intent_label, opp_label, parse_ws_server,
+        sanitize, Config,
     };
+    use ptcg_dragapult_bots::wire::event::WirePlayerId;
     use ptcg_dragapult_bots::wire::state::PokemonInPlayDto;
+
+    #[test]
+    fn game_end_summary_renders_draw_for_none() {
+        // 勝者ありは P1/P2、winner=None は引き分けなので "Draw"。
+        assert_eq!(
+            game_end_summary(Some(WirePlayerId::P1), "PrizeTaken"),
+            "winner=P1 reason=PrizeTaken"
+        );
+        assert_eq!(
+            game_end_summary(Some(WirePlayerId::P2), "DeckOut"),
+            "winner=P2 reason=DeckOut"
+        );
+        assert_eq!(
+            game_end_summary(None, "PrizeTaken"),
+            "winner=Draw reason=PrizeTaken"
+        );
+    }
 
     /// テスト用の最小 Config (intent 系フィールドだけ後で上書きする)。
     fn base_cfg() -> Config {
